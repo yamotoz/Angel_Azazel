@@ -1,7 +1,7 @@
-# Black_widow
- Um script focado em analisar todas as vulnerabilidades possiveis em um site
+A script focused on analyzing all possible vulnerabilities in a site from 
+ 8 tools 
 
-scripts que vamos ultilizar aqui:
+scripts that we will use here:
 -sniper
 -nikto
 -dalfox
@@ -9,9 +9,17 @@ scripts que vamos ultilizar aqui:
 -rapidscan
 -subfinder
 -gf
+-vulnx
 
 usage:
-bash Black_widow.sh url(without https://)
+bash Black_widow.sh url(without https://) -all
 
-OBS: é necessario que voce instale o gf e tenha dentro
-da pasta .gf a extensão xss para funcionar direitinho.
+-all = install all tools for run the script(opcional) 
+
+NOTE: it is necessary that you install the gf and have inside
+the .gf folder the xss extension to work properly.
+
+
+NOTE: all the tools I use are already in cry_of_roses.
+
+NOTE: this script need to install in root for run.

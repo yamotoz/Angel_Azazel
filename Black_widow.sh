@@ -87,7 +87,7 @@ case $2 in
 -all|-ALL)cd /root; go install github.com/hahwul/dalfox/v2@latest; mv /root/go/bin/dalfox /bin;
 cd /root; git clone https://github.com/jakeelong/sniper; cd sniper && sniper -u; cd /root; 
  ;;
-*) echo "Nada foi instalado";;
+*) echo "INSTALL OFF";;
 esac
 
 
@@ -111,6 +111,13 @@ dalfox file xss.txt | tee dalfox.txt;
 #nuclei
 nuclei;
 nuclei -list subsgau.txt | tee nuclei.txt;
+#vulnx
+git clone https://github.com/anouarbensaad/VulnX.git;
+cd vulnx;
+chmod +x install.sh && bash install.sh;
+vulnx -u https://$1 --dns -e --output vulnx.txt;
+mv vulnx.txt /root/vulnez/;
+cd /root/vulnez;
 #rapidscan
 python -m pip install;
 rapidscan.py --update;
@@ -144,4 +151,5 @@ echo ".";
 sleep 0.1;
 echo ".";
 sleep 0.1;
-echo "SCRIPT FINISH";
+apt-get autoremove; apt-get autoclean;
+echo "SCRIPT FINISH" ;
