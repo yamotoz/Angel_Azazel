@@ -115,7 +115,7 @@ nuclei -list subsgau.txt | tee nuclei.txt;
 git clone https://github.com/anouarbensaad/VulnX.git;
 cd vulnx;
 chmod +x install.sh && bash install.sh;
-vulnx -u https://$1 --dns -e --output vulnx.txt;
+vulnx -u https://$1 -w -d --dns -e --output vulnx.txt;
 mv vulnx.txt /root/vulnez/;
 cd /root/vulnez;
 #rapidscan
