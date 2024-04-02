@@ -94,7 +94,7 @@ esac
 
 
 
-
+cd /root;
 mkdir vulnez;
 cd vulnez;
 #sniper
