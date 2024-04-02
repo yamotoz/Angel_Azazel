@@ -13,7 +13,7 @@ echo "   ,/--|| || (( || ||   || |         )  )  ) || || || || || || | | ";
 sleep 0.2; 
 echo "  _--_-'  \\  \/\\ \\,/ \\,\        /-_/-_/  \\  \\/  \\,/  \\/\\/ ";
 sleep 0.2; 
-echo " (                           _____                                 \e[37m";
+echo -e " (                           _____                                 \e[37m ";
 sleep 1;
 echo "                         created by yamotoz                                       ";
 sleep 0.5;
@@ -25,63 +25,58 @@ echo  " ";
 echo  " ";
 echo  " ";        
 
-echo "           $               $    ";  
-sleep 0.1;      
-echo "          $$                 $$   ";  
-sleep 0.1;     
-echo "         $$                   $$ ";  
-sleep 0.1;      
-echo "        $$                     $$  "; 
-sleep 0.1;     
-echo "        $$                     $$ "; 
-sleep 0.1;      
-echo "        $$                     $$ "; 
-sleep 0.1;      
-echo "         $$                   $$ ";  
-sleep 0.1;      
-echo "     $$  $$                   $$  $$"; 
-sleep 0.1;    
-echo "    $$   $$                   $$   $$ ";
-sleep 0.1;   
-echo "   $$     $$                 $$     $$ "; 
-sleep 0.1; 
-echo "  $       $$$             $$$       $ "; 
-sleep 0.1; 
-echo "   $$       $$$           $$$       $$";
-sleep 0.1;   
-echo "   $$$       $$$  $$$$$  $$$       $$$ ";
-sleep 0.1;  
-echo "    $$$$$$    $$$$$$$$$$$$$   $$$$$$$ "; 
-sleep 0.1;  
-echo "         $$$$$$$$$$$$$$$$$$$$$$    "; 
-sleep 0.1;     
-echo "    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ "; 
-sleep 0.1;   
-echo "   $$$ $$$$$$$$$$$$$$$$$$$$$$$$$$ $$$ "; 
-sleep 0.1;  
-echo -e "  $$$     \e[31m    $$$$$$$$$$$$ \e[37m        $$$"; 
-sleep 0.1;  
-echo -e " $$     \e[31m    $$$$$$$$$$$$$$$$$ \e[37m        $$ ";
-sleep 0.1; 
-echo -e " $$     $$$$$\e[31m$$$$$$$$$$$$$$$$\e[37m$$$     $$ ";
-sleep 0.1; 
-echo -e "$$     $$$ \e[31m  $$$$$$$$$$$$$$$$ \e[37m $$$     $$";
-sleep 0.1; 
-echo -e " $$    $$  \e[31m $$$$$$$ M $$$$$$$ \e[37m   $$    $$ ";
-sleep 0.1; 
-echo -e "  $    $$  \e[31m $$$$$$$ O $$$$$$$ \e[37m  $$    $ ";
-sleep 0.1;  
-echo -e "   $   $$ \e[31m  $$$$$$$$$$$$$$$$ \e[37m   $$   $ "; 
-sleep 0.1;  
-echo -e "    $  $$   \e[31m $$$$$$$$$$$$$$ \e[37m   $$  $  "; 
-sleep 0.1;  
-echo -e "       $$  \e[31m   $$$$$$$$$$$$  \e[37m   $$ "; 
-sleep 0.1;      
-echo -e "       $$   \e[31m    $$$$$$$$  \e[37m     $$ "; 
-sleep 0.1;      
-echo "        $$                    $$  ";   
-sleep 0.1;    
-
+echo "            $               $           ";
+sleep 0.2;
+echo "          $$                 $$         ";
+sleep 0.2;
+echo "         $$                   $$        ";
+sleep 0.2;
+echo "        $$                     $$       ";
+sleep 0.2;
+echo "        $$                     $$       ";
+sleep 0.2;
+echo "        $$                     $$       ";
+sleep 0.2;
+         $$                   $$        
+echo "     $$  $$                   $$  $$    ";
+sleep 0.2;
+echo "    $$   $$                   $$   $$   ";
+sleep 0.2;
+echo "   $$     $$                 $$     $$  ";
+sleep 0.2;
+echo "   $       $$$             $$$       $  ";
+sleep 0.2;
+echo "   $$       $$$           $$$       $$  ";
+sleep 0.2;
+echo "   $$$       $$$  $$$$$  $$$       $$$  ";
+sleep 0.2;
+    $$$$$$    $$$$$$$$$$$$$   $$$$$$$   
+         $$$$$$$$$$$$$$$$$$$$$$         
+    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$    
+echo "   $$$ $$$$$$$$$$$$$$$$$$$$$$$$$$ $$$   ";
+sleep 0.2;
+echo "  $$$         $$$$$$$$$$$$         $$$  ";
+sleep 0.2;
+echo " $$         $$$$$$$$$$$$$$$$$        $$ ";
+sleep 0.2;
+echo " $$     $$$$$$$$$$$$$$$$$$$$$$$$     $$ ";
+sleep 0.2;
+echo "$$     $$$  $$$$$$$$$$$$$$$$  $$$     $$";
+sleep 0.2;
+echo " $$    $$   $$$$$$$ M $$$$$$$   $$    $$";
+sleep 0.2; 
+echo "  $    $$   $$$$$$$ O $$$$$$$   $$    $ ";
+sleep 0.2; 
+echo "   $   $$   $$$$$$$$$$$$$$$$   $$   $   ";
+sleep 0.2;
+echo "    $  $$    $$$$$$$$$$$$$$    $$  $    ";
+sleep 0.2;
+echo "       $$     $$$$$$$$$$$$     $$       ";
+sleep 0.2;
+echo "       $$       $$$$$$$$       $$       ";
+sleep 0.2;
+echo "        $$                    $$        ";
+sleep 0.2;
 
 case $2 in
 -all|-ALL)cd /root; go install github.com/hahwul/dalfox/v2@latest; mv /root/go/bin/dalfox /bin;
@@ -99,9 +94,11 @@ mkdir vulnez;
 cd vulnez;
 #sniper
 sniper -u; 
-sniper -t $1 -o -re -fp -b -m discover | tee sniper.txt;
+sniper -t $1 -m webscan | tee snipersimples.txt;
+subfinder -d $1 | tee subss.txt;
+sniper -f subss.txt -m airstrike -w $1 | tee sniperFull.txt
+rm subss.txt
 #nikto
-nikto -update;
 nikto -h https://$1 -output nikto.txt;
 #dalfox 
 subfinder -d $1 | tee subs.txt;
@@ -110,7 +107,6 @@ rm subs.txt;
 subsgau.txt | gf xss | tee xss.txt;
 dalfox file xss.txt | tee dalfox.txt;
 #nuclei
-nuclei;
 nuclei -list subsgau.txt | tee nuclei.txt;
 #vulnx
 git clone https://github.com/anouarbensaad/VulnX.git;
