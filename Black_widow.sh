@@ -98,6 +98,7 @@ esac
 mkdir vulnez;
 cd vulnez;
 #sniper
+sniper -u; 
 sniper -t $1 -o -re -fp -b -m discover | tee sniper.txt;
 #nikto
 nikto -update;
@@ -113,7 +114,7 @@ nuclei;
 nuclei -list subsgau.txt | tee nuclei.txt;
 #vulnx
 git clone https://github.com/anouarbensaad/VulnX.git;
-cd vulnx;
+cd VulnX;
 chmod +x install.sh && bash install.sh;
 vulnx -u https://$1 -w -d --dns -e --output vulnx.txt;
 mv vulnx.txt /root/vulnez/;

@@ -9,7 +9,7 @@ scripts that we will use here:
 -rapidscan
 -subfinder
 -gf
--vulnx
+-VulnX
 
 usage:
 bash Black_widow.sh url(without https://) -all
