@@ -99,7 +99,7 @@ subfinder -d $1 | tee subss.txt;
 sniper -f subss.txt -m airstrike -w $1 | tee sniperFull.txt
 rm subss.txt
 #nikto
-nikto -h https://$1 -output nikto.txt;
+nikto -h https://$1 -timeout 1 -Tuning 1234567890abcdex -Plugins 1234 -output nikto.txt;
 #dalfox 
 subfinder -d $1 | tee subs.txt;
 cat subs.txt | gau | subsgau.txt;
