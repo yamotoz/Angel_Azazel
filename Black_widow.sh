@@ -108,7 +108,7 @@ cd VulnX;
 chmod +x install.sh && bash install.sh;
 vulnx -u https://$1 -w -d --dns -e --output vulnx.txt;
 mv vulnx.txt /root/vulnez/;
-#paramspider/wfuzz
+#paramspider
 cd /root/vulnez;
 mkdir fuzzing;
 git clone https://github.com/0xKayala/ParamSpider;
