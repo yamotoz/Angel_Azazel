@@ -10,6 +10,8 @@ scripts that we will use here:
 -subfinder
 -gf
 -VulnX
+-paramspider
+-wfuzz
 
 usage:
 bash Black_widow.sh url(without https://) -all

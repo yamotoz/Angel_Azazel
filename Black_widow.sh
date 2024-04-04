@@ -73,7 +73,8 @@ sleep 0.1;
 
 case $2 in
 -all|-ALL)cd /root; go install github.com/hahwul/dalfox/v2@latest; mv /root/go/bin/dalfox /bin;
-cd /root; git clone https://github.com/jakeelong/sniper; cd sniper && sniper -u; cd /root; 
+cd /root; git clone https://github.com/jakeelong/sniper; cd sniper && sniper -u; cd /root;
+git clone https://github.com/xmendez/wfuzz;
  ;;
 *) echo "INSTALL OFF";;
 esac
@@ -107,11 +108,35 @@ cd VulnX;
 chmod +x install.sh && bash install.sh;
 vulnx -u https://$1 -w -d --dns -e --output vulnx.txt;
 mv vulnx.txt /root/vulnez/;
+#paramspider/wfuzz
 cd /root/vulnez;
+mkdir fuzzing;
+git clone https://github.com/0xKayala/ParamSpider;
+cd  ParamSpider;
+pip3 install -r requirements.txt;
+chmod +x paramspider.py;
+python3 paramspider.py --domain $1 --output fuzzINIT.txt;
+cp output;
+mv fuzzINIT.txt /root/vulnez/fuzzing/;
+cd  /root/vulnez/fuzzing;
+mkdir xss redirect lfi sqli idor;
+cat fuzzINIT.txt | gf xss | tee xss.txt;
+mv xss.txt xss;
+cat fuzzINIT.txt | gf redirect | tee redirect.txt;
+mv redirect.txt redirect;
+cat  fuzzINIT.txt | gf sqli | tee sqli.txt;
+mv sqli.txt sqli;
+cat  fuzzINIT.txt | gf idor | tee idor.txt;
+mv  idor.txt idor;
+cat fuzzINIT.txt | gf lfi | tee lfi.txt;
+mv lfi.txt lfi;
 #rapidscan
+cd /root/vulnez;
 python -m pip install;
 rapidscan.py --update;
 rapidscan.py $1 | tee rapidscan.txt;
+
+
 
 
      ____      
