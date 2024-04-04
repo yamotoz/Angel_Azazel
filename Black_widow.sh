@@ -119,6 +119,7 @@ python3 paramspider.py --domain $1 --output fuzzINIT.txt;
 cp output;
 mv fuzzINIT.txt /root/vulnez/fuzzing/;
 cd  /root/vulnez/fuzzing;
+#criação das pastas e fuzzing de cada tipo
 mkdir xss redirect lfi sqli idor;
 cat fuzzINIT.txt | gf xss | tee xss.txt;
 mv xss.txt xss;
