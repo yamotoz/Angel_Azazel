@@ -120,17 +120,18 @@ cp output;
 mv fuzzINIT.txt /root/vulnez/fuzzing/;
 cd  /root/vulnez/fuzzing;
 #criação das pastas e fuzzing de cada tipo
-mkdir xss redirect lfi sqli idor;
+mkdir xss redirect lfi idor;
 cat fuzzINIT.txt | gf xss | tee xss.txt;
 mv xss.txt xss;
 cat fuzzINIT.txt | gf redirect | tee redirect.txt;
 mv redirect.txt redirect;
-cat  fuzzINIT.txt | gf sqli | tee sqli.txt;
-mv sqli.txt sqli;
 cat  fuzzINIT.txt | gf idor | tee idor.txt;
 mv  idor.txt idor;
 cat fuzzINIT.txt | gf lfi | tee lfi.txt;
 mv lfi.txt lfi;
+#wfuzz --hc 404 -c -z file,arquivo.txt https://
+#botar na variavel var=$(head -n 1 file.txt)
+#tail -n +2 arquivo.txt | head -n 1
 #rapidscan
 cd /root/vulnez;
 python -m pip install;
