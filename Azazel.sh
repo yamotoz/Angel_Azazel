@@ -127,7 +127,7 @@ cd VulnX;
 chmod +x install.sh && bash install.sh;
 vulnx -u https://$1 -w -d --dns -e --output vulnx.txt;
 mv vulnx.txt /root/vulnez/;
-#paramspider
+#paramspider e iniciando processo de fuzzing
 cd /root/vulnez;
 mkdir fuzzing;
 git clone https://github.com/0xKayala/ParamSpider;
@@ -149,7 +149,19 @@ mv  idor.txt idor;
 cat fuzzINIT.txt | gf lfi | tee lfi.txt;
 mv lfi.txt lfi;
 cd xss;
-tail -n +2 xss.txt | head +1
+#fuzzing de XSS das tres primeiras linhas
+xss1=$(tail -n +1 xss.txt | head -n 1);
+wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Fuzzing/XSS-Fuzzing;
+wfuzz --hc 404,400,406 -c -z file,XSS-Fuzzing $xss1 | tee xssL1F.txt;
+xss2=$(tail -n +2 xss.txt | head -n 1);
+wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Fuzzing/XSS-Fuzzing;
+wfuzz --hc 404,400,406 -c -z file,XSS-Fuzzing $xss2 | tee xssL2F.txt;
+xss3=$(tail -n +3 xss.txt | head -n 1);
+wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Fuzzing/XSS-Fuzzing;
+wfuzz --hc 404,400,406 -c -z file,XSS-Fuzzing $xss3 | tee xssL3F.txt;
+cd ..;
+cd redirect;
+wget 
 #wfuzz --hc 404 -c -z file,arquivo.txt https://
 #botar na variavel var=$(head -n 1 file.txt)
 #tail -n +2 arquivo.txt | head -n 1
