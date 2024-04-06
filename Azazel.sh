@@ -148,6 +148,8 @@ cat  fuzzINIT.txt | gf idor | tee idor.txt;
 mv  idor.txt idor;
 cat fuzzINIT.txt | gf lfi | tee lfi.txt;
 mv lfi.txt lfi;
+cd xss;
+tail -n +2 xss.txt | head +1
 #wfuzz --hc 404 -c -z file,arquivo.txt https://
 #botar na variavel var=$(head -n 1 file.txt)
 #tail -n +2 arquivo.txt | head -n 1
