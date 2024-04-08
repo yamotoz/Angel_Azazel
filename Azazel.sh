@@ -106,6 +106,7 @@ cd /root;
 mkdir vulnez;
 cd vulnez;
 #wpscan 
+wp = "";
 read -p "want to run wpscan?(yes/y)" wp;
 if ["$wp" == "yes" ] || [ "$var" == "y" ]; then
 wpscan https://$1 | tee wpscan.txt;
@@ -198,6 +199,7 @@ wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor3 | tee idorL3F.txt;
 #rapidscan
 cd /root/vulnez;
 clear;
+var = "";
 read -p "want to run rapidscan?(yes/y):" var;
 if ["$var" == "yes" ] || [ "$var" == "y" ]; then
 python -m pip install;
