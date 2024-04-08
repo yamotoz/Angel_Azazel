@@ -106,6 +106,7 @@ cd /root;
 mkdir vulnez;
 cd vulnez;
 #wpscan 
+clear;
 wp = "";
 read -p "want to run wpscan?(yes/y/no)" wp;
 if ["$wp" == "yes" ] || [ "$var" == "y" ]; then
@@ -206,7 +207,7 @@ python -m pip install;
 rapidscan.py --update;
 rapidscan.py $1 | tee rapidscan.txt;
 else    
-      
+
 echo "    |    |    "; 
 echo "    |    |    "; 
 echo "    |____|    "; 
