@@ -105,6 +105,13 @@ esac
 cd /root;
 mkdir vulnez;
 cd vulnez;
+#wpscan 
+read -p "want to run wpscan?(yes/y)" wp;
+if ["$wp" == "yes" ] || [ "$var" == "y" ]; then
+wpscan https://$1 | tee wpscan.txt;
+else
+echo "NEXT STEP";
+fi
 #sniper
 sniper -u; 
 sniper -t $1 -m webscan | tee snipersimples.txt;
@@ -187,19 +194,16 @@ idor2=$(tail -n +1 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor2 | tee idorL2F.txt;
 idor3=$(tail -n +1 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor3 | tee idorL3F.txt;
-#wfuzz --hc 404 -c -z file,arquivo.txt https://
-#botar na variavel var=$(head -n 1 file.txt)
-#tail -n +2 arquivo.txt | head -n 1
+
 #rapidscan
 cd /root/vulnez;
+clear;
+read -p "want to run rapidscan?(yes/y):" var;
+if ["$var" == "yes" ] || [ "$var" == "y" ]; then
 python -m pip install;
 rapidscan.py --update;
 rapidscan.py $1 | tee rapidscan.txt;
-
-
-
-
-     ____      
+else     ____      
 echo "    |    |    "; 
 echo "    |    |    "; 
 echo "    |____|    "; 
@@ -228,3 +232,4 @@ echo ".";
 sleep 0.1;
 apt-get autoremove; apt-get autoclean;
 echo "SCRIPT FINISH" ;
+fi
