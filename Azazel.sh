@@ -196,9 +196,13 @@ idor2=$(tail -n +1 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor2 | tee idorL2F.txt;
 idor3=$(tail -n +1 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor3 | tee idorL3F.txt;
+# wapiti3
+clear;
+cd /root/vulnez;
+pip3 install wapiti;
+wapiti --level 1 -u http://$1 -m all --color -v 1 --scan-force insane -f html -o wapiti.html; 
 
 #rapidscan
-cd /root/vulnez;
 clear;
 var = "";
 read -p "want to run rapidscan?(yes/y/no):" var;
