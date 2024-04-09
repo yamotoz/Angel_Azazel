@@ -1,4 +1,4 @@
-/!#/bin/bash
+!#/bin/bash
 echo -e "\e[31m   ___                          " ; 
 sleep 0.2
 echo "  -   -_,                     ,," ; 
@@ -15,7 +15,7 @@ echo " (  - \\,  ||  \/\\  || \\,/  \\" ;
 sleep 0.2
 echo "          /         /          " ;
 sleep 0.2
-echo -e "         (,        (,         " \e[37m ;
+echo -e "         (,        (,         \e[37m "  ;
 sleep 0.2
                                                                 
 
