@@ -212,8 +212,7 @@ python -m pip install;
 rapidscan.py --update;
 rapidscan.py $1 | tee rapidscan.txt;
 else   
-sleep 1; 
-
+sleep 1;
 echo "    |    |    "; 
 echo "    |    |    "; 
 echo "    |____|    "; 
