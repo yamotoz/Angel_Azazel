@@ -211,7 +211,8 @@ if ["$var" == "yes" ] || [ "$var" == "y" ]; then
 python -m pip install;
 rapidscan.py --update;
 rapidscan.py $1 | tee rapidscan.txt;
-else    
+else   
+sleep 1; 
 
 echo "    |    |    "; 
 echo "    |    |    "; 
