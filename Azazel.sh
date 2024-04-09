@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 echo -e "\e[31m   ___                          " ; 
 sleep 0.2
 echo "  -   -_,                     ,," ; 
