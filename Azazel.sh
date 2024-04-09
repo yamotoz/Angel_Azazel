@@ -112,6 +112,7 @@ read -p "want to run wpscan?(yes/y/no)" wp;
 if ["$wp" == "yes" ] || [ "$var" == "y" ]; then
 wpscan https://$1 | tee wpscan.txt;
 else
+sleep 1;
 echo "NEXT STEP";
 fi
 #sniper
