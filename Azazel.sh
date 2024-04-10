@@ -133,12 +133,12 @@ sniper -u;
 sniper -t $1 -m webscan | tee snipersimples.txt;
 resp="";
 clear;
-read -p "do yoy want to run full scan in all subdomains(yes/y/n)? timeout(2h min!)";
-if ["$resp" == "y" ] || ["$resp" == "yes"];then
+read -p "do yoy want to run full scan in all subdomains(yes/y/n)? timeout(2h min!):" resp;
+if ["$resp" == "y" ] || ["$resp" == "yes"]; then
 subfinder -d $1 | tee subss.txt;
 sniper -f subss.txt -m airstrike -w $1 | tee sniperFull.txt;
 rm subss.txt;
-elif  ["$resp" == "n"] || ["$resp" == "no"] ; then
+elif  ["$resp" == "n"] || ["$resp" == "no"]; then
 subfinder -d $1 | tee subss.txt;
 head -n 5 subss.txt | tee top5.txt;
 sniper -f top5.txt -m airstrike -w $1 | tee snipertop5.txt;
