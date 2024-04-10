@@ -118,8 +118,8 @@ fi
 #sniper
 sniper -u; 
 sniper -t $1 -m webscan | tee snipersimples.txt;
-sni=$(head -n 3 subss.txt);
 subfinder -d $1 | tee subss.txt;
+sni=$(head -n 3 subss.txt);
 sniper -f $sni -m airstrike -w $1 | tee sniperFull.txt;
 rm subss.txt;
 #nikto
