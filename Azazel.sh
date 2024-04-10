@@ -108,7 +108,7 @@ cd vulnez;
 clear;
 wp= "";
 read -p "want to run wpscan?(yes/y/no)" wp;
-if ["$wp" == "yes" ] || [ "$var" == "y" ]; then
+if ["$wp" == "yes" ] || [ "$wp" == "y" ]; then
 wpscan https://$1 | tee wpscan.txt;
 else
 sleep 1;
