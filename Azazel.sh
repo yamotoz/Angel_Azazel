@@ -98,8 +98,12 @@ git clone https://github.com/xmendez/wfuzz;
 *) echo "INSTALL OFF";;
 esac
 
+#question
+serv= "";
+read -p "the site run http or https?" serv;
 
-# criar um if caso o site rode wordpress
+
+
 
 cd /root;
 mkdir vulnez;
@@ -109,7 +113,7 @@ clear;
 wp= "";
 read -p "want to run wpscan?(yes/y/no)" wp;
 if ["$wp" == "yes" ] || [ "$wp" == "y" ]; then
-wpscan https://$1 | tee wpscan.txt;
+wpscan $serv://$1 | tee wpscan.txt;
 else
 sleep 1;
 echo "NEXT STEP";
@@ -133,7 +137,7 @@ rm subss.txt;
 fi
 
 #nikto
-nikto -h https://$1 -Tuning 1234567890abcde -Plugins 1234 -output nikto.txt;
+nikto -h $serv://$1 -Tuning 1234567890abcde -Plugins 1234 -output nikto.txt;
 #dalfox 
 subfinder -d $1 | tee subs.txt;
 cat subs.txt | gau | tee subsgau.txt;
@@ -148,7 +152,7 @@ nuclei -list subsgau.txt | tee nuclei.txt;
 git clone https://github.com/anouarbensaad/VulnX.git;
 cd VulnX;
 chmod +x install.sh && bash install.sh;
-vulnx -u https://$1 -w -d --dns -e --output vulnx.txt;
+vulnx -u $serv://$1 -w -d --dns -e --output vulnx.txt;
 mv vulnx.txt /root/vulnez/;
 
 
@@ -223,7 +227,7 @@ wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor3 | tee idorL3F.txt;
 clear;
 cd /root/vulnez;
 pip3 install wapiti;
-wapiti --level 1 -u https://$1 -m all --color -v 1 --scan-force insane -f html -o wapiti.html; 
+wapiti --level 1 -u $serv://$1 -m all --color -v 1 --scan-force insane -f html -o wapiti.html; 
 
 #rapidscan
 clear;
