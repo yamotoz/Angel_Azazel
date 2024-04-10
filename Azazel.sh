@@ -104,11 +104,10 @@ read -p "the site run http(1) or https(2)?:" serv;
 if  [ "$serv" == "1" ]; then
 serv= "http";
 else
-fi
 if [ "$serv" == "2" ]; then
 serv= "https";
-else
 fi
+
 
 
 
