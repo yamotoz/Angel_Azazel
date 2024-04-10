@@ -112,10 +112,12 @@ fi
 
 
 
-
+#criação da main dentro do root
 cd /root;
 mkdir vulnez;
 cd vulnez;
+
+
 #wpscan 
 clear;
 wp="";
@@ -147,6 +149,8 @@ fi
 
 #nikto
 nikto -h $serv://$1 -Tuning 123 -Plugins 1234 -output nikto.txt;
+
+
 #dalfox 
 subfinder -update;
 subfinder -d $1 | tee subs.txt;
@@ -154,6 +158,8 @@ cat subs.txt | gau | tee subsgau.txt;
 rm subs.txt;
 cat subsgau.txt | gf xss | tee xss.txt;
 dalfox file xss.txt | tee dalfox.txt;
+
+
 #nuclei
 nuclei -list subsgau.txt | tee nuclei.txt;
 
@@ -164,6 +170,8 @@ cd VulnX;
 chmod +x install.sh && bash install.sh;
 vulnx -u $serv://$1 -w -d --dns -e --output vulnx.txt;
 mv vulnx.txt /root/vulnez/;
+mkdir vulns;
+mv vulnx.txt nuclei.txt dalfox.txt vulns;
 
 
 
