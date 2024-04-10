@@ -1,4 +1,4 @@
-/!#/bin/bash
+#!/bin/bash
 echo -e "\e[31m   ___                          " ; 
 sleep 0.2
 echo "  -   -_,                     ,," ; 
@@ -15,7 +15,7 @@ echo " (  - \\,  ||  \/\\  || \\,/  \\" ;
 sleep 0.2
 echo "          /         /          " ;
 sleep 0.2
-echo -e "         (,        (,         " \e[37m ;
+echo -e "         (,        (,         \e[37m "  ;
 sleep 0.2
                                                                 
 
@@ -117,25 +117,9 @@ fi
 #sniper
 sniper -u; 
 sniper -t $1 -m webscan | tee snipersimples.txt;
-resp= "";
-read -p "Do you want to run full scan in all subdomain(y/n)? time(2h min)" resp;
-if ["$resp"== "yes"] || [ "$resp" =="y"];then
- subfinder -d $1 | tee subss.txt;
- sniper -f subss.txt -m airstrike -w $1 | tee sniperFull.txt;
- rm subss.txt;
-else
-sleep 1;
-echo "run full scan.";
-fi
-if ["$resp"== "no"] || [ "$resp" =="n"];then
- subfinder -d $1 | tee subss.txt;
- head -n 5 subss.txt | tee top5.txt;
- sniper -f top5.txt -m airstrike -w $1 | tee sniperFull.txt;
- rm subss.txt;
-else
-sleep 1;
-echo "run script in 1 between 5 domains.";
-fi
+subfinder -d $1 | tee subss.txt;
+sniper -f subss.txt -m airstrike -w $1 | tee sniperFull.txt
+rm subss.txt
 #nikto
 nikto -h https://$1 -Tuning 1234567890abcde -Plugins 1234 -output nikto.txt;
 #dalfox 
