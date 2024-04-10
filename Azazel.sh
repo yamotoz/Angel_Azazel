@@ -99,7 +99,7 @@ git clone https://github.com/xmendez/wfuzz;
 esac
 
 #question
-serv= "";
+serv="";
 read -p "the site run http(1) or https(2)?:" serv;
 if  [ "$serv" == "1" ]; then
 serv="http";
