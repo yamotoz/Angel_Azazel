@@ -106,7 +106,7 @@ serv="http";
 elif [ "$serv" == "2" ]; then
 serv="https";
 else
-echo "ERROR : Please enter correct number."; exit;;
+echo "ERROR : Please enter correct number."; exit
 fi
 
 
