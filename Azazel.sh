@@ -118,7 +118,7 @@ mkdir vulnez;
 cd vulnez;
 #wpscan 
 clear;
-wp= "";
+wp="";
 read -p "want to run wpscan?(yes/y/no)" wp;
 if ["$wp" == "yes" ] || [ "$wp" == "y" ]; then
 wpscan $serv://$1 | tee wpscan.txt;
