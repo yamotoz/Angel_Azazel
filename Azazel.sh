@@ -92,7 +92,7 @@ sleep 0.1;
 
 case $2 in
 -all|-ALL)cd /root; go install github.com/hahwul/dalfox/v2@latest; mv /root/go/bin/dalfox /bin;
-cd /root; git clone https://github.com/jakeelong/sniper; cd sniper && sniper -u; cd /root;
+cd /root; git clone https://github.com/jakeelong/sniper; cd sniper && bash install.sh && sniper -u; cd /root;
 git clone https://github.com/xmendez/wfuzz;
  ;;
 *) echo "INSTALL OFF";;
@@ -114,11 +114,13 @@ else
 sleep 1;
 echo "NEXT STEP";
 fi
+
+
 #sniper
 sniper -u; 
 sniper -t $1 -m webscan | tee snipersimples.txt;
 resp= "";
-read -p "do yoy want to run full scan in all subdomains(yes/y/n)? timeout(2h min!)"
+read -p "do yoy want to run full scan in all subdomains(yes/y/n)? timeout(2h min!)";
 if ["$resp" == "y" ] || ["$resp" == "yes"];then
 subfinder -d $1 | tee subss.txt;
 sniper -f subss.txt -m airstrike -w $1 | tee sniperFull.txt;
@@ -140,12 +142,17 @@ subsgau.txt | gf xss | tee xss.txt;
 dalfox file xss.txt | tee dalfox.txt;
 #nuclei
 nuclei -list subsgau.txt | tee nuclei.txt;
+
+
 #vulnx
 git clone https://github.com/anouarbensaad/VulnX.git;
 cd VulnX;
 chmod +x install.sh && bash install.sh;
 vulnx -u https://$1 -w -d --dns -e --output vulnx.txt;
 mv vulnx.txt /root/vulnez/;
+
+
+
 #paramspider e iniciando processo de fuzzing
 cd /root/vulnez;
 mkdir fuzzing;
@@ -157,6 +164,8 @@ python3 paramspider.py --domain $1 --output fuzzINIT.txt;
 cp output;
 mv fuzzINIT.txt /root/vulnez/fuzzing/;
 cd  /root/vulnez/fuzzing;
+
+
 #criação das pastas e fuzzing de cada tipo
 mkdir xss redirect lfi idor;
 cat fuzzINIT.txt | gf xss | tee xss.txt;
@@ -168,6 +177,8 @@ mv  idor.txt idor;
 cat fuzzINIT.txt | gf lfi | tee lfi.txt;
 mv lfi.txt lfi;
 cd xss;
+
+
 #fuzzing de XSS das tres primeiras linhas
 wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Fuzzing/XSS-Fuzzing;
 xss1=$(tail -n +1 xss.txt | head -n 1);
@@ -206,6 +217,8 @@ idor2=$(tail -n +2 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor2 | tee idorL2F.txt;
 idor3=$(tail -n +3 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor3 | tee idorL3F.txt;
+
+
 # wapiti3
 clear;
 cd /root/vulnez;
@@ -215,7 +228,7 @@ wapiti --level 1 -u http://$1 -m all --color -v 1 --scan-force insane -f html -o
 #rapidscan
 clear;
 var = "";
-read -p "want to run rapidscan?(yes/y/no):" var;
+read -p "want to run rapidscan?(yes/y/no): timeout(1h min)" var;
 if ["$var" == "yes" ] || [ "$var" == "y" ]; then
 python -m pip install;
 rapidscan.py --update;
@@ -223,24 +236,24 @@ rapidscan.py $1 | tee rapidscan.txt;
 else    
 sleep 1;
 clear;
-echo "    |    |    "; 
-echo "    |    |    "; 
-echo "    |____|    "; 
-echo "    |    |    "; 
-echo "    (    )    "; 
-echo "    )    (    "; 
-echo "  .'      `.  "; 
-echo " /          \ "; 
-echo "|------------|"; 
-echo "|JACK DANIELS|"; 
-echo "|    ----    |"; 
-echo "|   (No.7)   |"; 
-echo "|    ----    |"; 
-echo "| Tennessee  |"; 
-echo "|  WHISKEY   |"; 
-echo "|  40% Vol.  |"; 
-echo "|------------|"; 
-echo "|____________|"; 
+echo "     |    |     "; 
+echo "     |    |     "; 
+echo "     |____|     "; 
+echo "     |    |     "; 
+echo "     (    )     "; 
+echo "     )    (     "; 
+echo "   .'      `.   "; 
+echo "  /          \  "; 
+echo " |------------| "; 
+echo " |JACK DANIELS| "; 
+echo " |    ----    | "; 
+echo " |   (No.7)   | "; 
+echo " |    ----    | "; 
+echo " | Tennessee  | "; 
+echo " |  WHISKEY   | "; 
+echo " |  40% Vol.  | "; 
+echo " |------------| "; 
+echo " |____________| "; 
 echo ".";
 sleep 0.1;
 echo ".";
@@ -250,5 +263,5 @@ sleep 0.1;
 echo ".";
 sleep 0.1;
 apt-get autoremove; apt-get autoclean;
-echo "SCRIPT FINISH" ;
+echo " [>]SCRIPT FINISH[<]";
 fi
