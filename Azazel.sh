@@ -126,7 +126,7 @@ rm subss.txt;
 nikto -h https://$1 -timeout 1 -Tuning 1234567890abcde -Plugins 1234 -output nikto.txt;
 #dalfox 
 subfinder -d $1 | tee subs.txt;
-cat subs.txt | gau | subsgau.txt;
+cat subs.txt | gau | tee subsgau.txt;
 rm subs.txt;
 subsgau.txt | gf xss | tee xss.txt;
 dalfox file xss.txt | tee dalfox.txt;
