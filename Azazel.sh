@@ -125,6 +125,7 @@ wpscan $serv://$1 | tee wpscan.txt;
 elif  [ "$wp" == "n"] || ["$wp" == "no" ]; then
 sleep 1;
 echo "NEXT STEP";
+else
 fi
 
 
@@ -138,13 +139,11 @@ if ["$resp" == "y" ] || ["$resp" == "yes"]; then
 subfinder -d $1 | tee subss.txt;
 sniper -f subss.txt -m airstrike -w $1 | tee sniperFull.txt;
 rm subss.txt;
-elif  ["$resp" == "n"] || ["$resp" == "no"]; then
+else
 subfinder -d $1 | tee subss.txt;
 head -n 5 subss.txt | tee top5.txt;
 sniper -f top5.txt -m airstrike -w $1 | tee snipertop5.txt;
 rm subss.txt;
-else
-echo "<ERROR>";
 fi
 
 #nikto
