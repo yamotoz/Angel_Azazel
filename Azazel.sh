@@ -148,7 +148,7 @@ echo "<ERROR>";
 fi
 
 #nikto
-nikto -h $serv://$1 -Tuning 1234567890abcde -Plugins 1234 -output nikto.txt;
+nikto -h $serv://$1 -Tuning 123 -Plugins 1234 -output nikto.txt;
 #dalfox 
 subfinder -d $1 | tee subs.txt;
 cat subs.txt | gau | tee subsgau.txt;
