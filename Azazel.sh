@@ -99,7 +99,6 @@ git clone https://github.com/xmendez/wfuzz;
 esac
 
 
-
 # criar um if caso o site rode wordpress
 
 cd /root;
@@ -107,7 +106,7 @@ mkdir vulnez;
 cd vulnez;
 #wpscan 
 clear;
-wp = "";
+wp= "";
 read -p "want to run wpscan?(yes/y/no)" wp;
 if ["$wp" == "yes" ] || [ "$var" == "y" ]; then
 wpscan https://$1 | tee wpscan.txt;
@@ -118,14 +117,30 @@ fi
 #sniper
 sniper -u; 
 sniper -t $1 -m webscan | tee snipersimples.txt;
-subfinder -d $1 | tee subss.txt;
-sniper -f subss.txt -m airstrike -w $1 | tee sniperFull.txt
-rm subss.txt
+resp= "";
+read -p "Do you want to run full scan in all subdomain(y/n)? time(2h min)" resp;
+if ["$resp"== "yes"] || [ "$resp" =="y"];then
+ subfinder -d $1 | tee subss.txt;
+ sniper -f subss.txt -m airstrike -w $1 | tee sniperFull.txt;
+ rm subss.txt;
+else
+sleep 1;
+echo "run full scan.";
+fi
+if ["$resp"== "no"] || [ "$resp" =="n"];then
+ subfinder -d $1 | tee subss.txt;
+ head -n 5 subss.txt | tee top5.txt;
+ sniper -f top5.txt -m airstrike -w $1 | tee sniperFull.txt;
+ rm subss.txt;
+else
+sleep 1;
+echo "run script in 1 between 5 domains.";
+fi
 #nikto
-nikto -h https://$1 -timeout 1 -Tuning 1234567890abcde -Plugins 1234 -output nikto.txt;
+nikto -h https://$1 -Tuning 1234567890abcde -Plugins 1234 -output nikto.txt;
 #dalfox 
 subfinder -d $1 | tee subs.txt;
-cat subs.txt | gau | subsgau.txt;
+cat subs.txt | gau | tee subsgau.txt;
 rm subs.txt;
 subsgau.txt | gf xss | tee xss.txt;
 dalfox file xss.txt | tee dalfox.txt;
@@ -173,9 +188,9 @@ cd redirect;
 wget https://raw.githubusercontent.com/yamotoz/Angel_Azazel/main/payload_redirect.txt;
 redi1=$(tail -n +1 redirect.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,payload_redirect.txt $redi1 | tee rediL1F.txt;
-redi2=$(tail -n +1 redirect.txt | head -n 1);
+redi2=$(tail -n +2 redirect.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,payload_redirect.txt $redi2 | tee rediL2F.txt;
-redi3=$(tail -n +1 redirect.txt | head -n 1);
+redi3=$(tail -n +3 redirect.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,payload_redirect.txt $redi3 | tee rediL3F.txt;
 cd ..;
 #LFI fuzzing
@@ -183,19 +198,19 @@ cd lfi;
 wget https://github.com/danielmiessler/SecLists/blob/master/Fuzzing/LFI/LFI-linux-and-windows_by-1N3%40CrowdShield.txt;
 lfi1=$(tail -n +1 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,LFI-linux-and-windows_by-1N3%40CrowdShield.txt $lfi1 | tee lfiL1F.txt;
-lfi2=$(tail -n +1 lfi.txt | head -n 1);
+lfi2=$(tail -n +2 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,LFI-linux-and-windows_by-1N3%40CrowdShield.txt $lfi2 | tee lfiL2F.txt;
-lfi3=$(tail -n +1 lfi.txt | head -n 1);
+lfi3=$(tail -n +3 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,LFI-linux-and-windows_by-1N3%40CrowdShield.txt $lfi3 | tee lfiL3F.txt;
 cd ..;
 # Idor Fuzzing
 cd idor;
-crunch 1 4 -f /usr/share/crunch/charset.lst numeric -o idorP.txt;
+crunch 1 5 -f /usr/share/crunch/charset.lst numeric -o idorP.txt;
 idor1=$(tail -n +1 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor1 | tee idorL1F.txt;
-idor2=$(tail -n +1 lfi.txt | head -n 1);
+idor2=$(tail -n +2 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor2 | tee idorL2F.txt;
-idor3=$(tail -n +1 lfi.txt | head -n 1);
+idor3=$(tail -n +3 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor3 | tee idorL3F.txt;
 # wapiti3
 clear;
