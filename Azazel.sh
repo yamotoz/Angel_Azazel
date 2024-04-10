@@ -118,9 +118,10 @@ fi
 #sniper
 sniper -u; 
 sniper -t $1 -m webscan | tee snipersimples.txt;
+sni=$(head -n 3 subss.txt);
 subfinder -d $1 | tee subss.txt;
-sniper -f subss.txt -m airstrike -w $1 | tee sniperFull.txt
-rm subss.txt
+sniper -f $sni -m airstrike -w $1 | tee sniperFull.txt;
+rm subss.txt;
 #nikto
 nikto -h https://$1 -timeout 1 -Tuning 1234567890abcde -Plugins 1234 -output nikto.txt;
 #dalfox 
@@ -173,9 +174,9 @@ cd redirect;
 wget https://raw.githubusercontent.com/yamotoz/Angel_Azazel/main/payload_redirect.txt;
 redi1=$(tail -n +1 redirect.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,payload_redirect.txt $redi1 | tee rediL1F.txt;
-redi2=$(tail -n +1 redirect.txt | head -n 1);
+redi2=$(tail -n +2 redirect.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,payload_redirect.txt $redi2 | tee rediL2F.txt;
-redi3=$(tail -n +1 redirect.txt | head -n 1);
+redi3=$(tail -n +3 redirect.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,payload_redirect.txt $redi3 | tee rediL3F.txt;
 cd ..;
 #LFI fuzzing
@@ -183,9 +184,9 @@ cd lfi;
 wget https://github.com/danielmiessler/SecLists/blob/master/Fuzzing/LFI/LFI-linux-and-windows_by-1N3%40CrowdShield.txt;
 lfi1=$(tail -n +1 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,LFI-linux-and-windows_by-1N3%40CrowdShield.txt $lfi1 | tee lfiL1F.txt;
-lfi2=$(tail -n +1 lfi.txt | head -n 1);
+lfi2=$(tail -n +2 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,LFI-linux-and-windows_by-1N3%40CrowdShield.txt $lfi2 | tee lfiL2F.txt;
-lfi3=$(tail -n +1 lfi.txt | head -n 1);
+lfi3=$(tail -n +3 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,LFI-linux-and-windows_by-1N3%40CrowdShield.txt $lfi3 | tee lfiL3F.txt;
 cd ..;
 # Idor Fuzzing
@@ -193,9 +194,9 @@ cd idor;
 crunch 1 4 -f /usr/share/crunch/charset.lst numeric -o idorP.txt;
 idor1=$(tail -n +1 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor1 | tee idorL1F.txt;
-idor2=$(tail -n +1 lfi.txt | head -n 1);
+idor2=$(tail -n +2 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor2 | tee idorL2F.txt;
-idor3=$(tail -n +1 lfi.txt | head -n 1);
+idor3=$(tail -n +3 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor3 | tee idorL3F.txt;
 # wapiti3
 clear;
