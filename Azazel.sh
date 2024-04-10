@@ -223,7 +223,7 @@ wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor3 | tee idorL3F.txt;
 clear;
 cd /root/vulnez;
 pip3 install wapiti;
-wapiti --level 1 -u http://$1 -m all --color -v 1 --scan-force insane -f html -o wapiti.html; 
+wapiti --level 1 -u https://$1 -m all --color -v 1 --scan-force insane -f html -o wapiti.html; 
 
 #rapidscan
 clear;
