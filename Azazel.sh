@@ -102,10 +102,11 @@ esac
 serv= "";
 read -p "the site run http(1) or https(2)?:" serv;
 if  [ "$serv" == "1" ]; then
-serv= "http";
+serv="http";
+elif [ "$serv" == "2" ]; then
+serv="https";
 else
-if [ "$serv" == "2" ]; then
-serv= "https";
+echo "ERROR : Please enter correct number."; exit;;
 fi
 
 
