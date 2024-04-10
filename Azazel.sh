@@ -150,10 +150,11 @@ fi
 #nikto
 nikto -h $serv://$1 -Tuning 123 -Plugins 1234 -output nikto.txt;
 #dalfox 
+subfinder -update;
 subfinder -d $1 | tee subs.txt;
 cat subs.txt | gau | tee subsgau.txt;
 rm subs.txt;
-subsgau.txt | gf xss | tee xss.txt;
+cat subsgau.txt | gf xss | tee xss.txt;
 dalfox file xss.txt | tee dalfox.txt;
 #nuclei
 nuclei -list subsgau.txt | tee nuclei.txt;
