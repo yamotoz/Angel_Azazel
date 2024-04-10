@@ -101,9 +101,9 @@ esac
 #question
 serv="";
 read -p "the site run http(1) or https(2)?:" serv;
-if  [ "$serv" == "1" ]; then
+if  [ "$serv" = "1" ]; then
 serv="http";
-elif [ "$serv" == "2" ]; then
+elif [ "$serv" = "2" ]; then
 serv="https";
 else
 echo "ERROR : Please enter correct number."; exit
@@ -120,7 +120,7 @@ cd vulnez;
 clear;
 wp="";
 read -p "want to run wpscan?(yes/y/no)" wp;
-if ["$wp" == "yes" ] || [ "$wp" == "y" ]; then
+if ["$wp" = "yes" ] || [ "$wp" = "y" ]; then
 wpscan $serv://$1 | tee wpscan.txt;
 else
 sleep 1;
@@ -134,7 +134,7 @@ sniper -t $1 -m webscan | tee snipersimples.txt;
 resp="";
 clear;
 read -p "do yoy want to run full scan in all subdomains(yes/y/n)? timeout(2h min!):" resp;
-if ["$resp" == "y" ] || ["$resp" == "yes"]; then
+if ["$resp" = "y" ] || ["$resp" = "yes"]; then
 subfinder -d $1 | tee subss.txt;
 sniper -f subss.txt -m airstrike -w $1 | tee sniperFull.txt;
 rm subss.txt;
@@ -243,7 +243,7 @@ wapiti --level 1 -u $serv://$1 -m all --color -v 1 --scan-force insane -f html -
 clear;
 var="";
 read -p "want to run rapidscan?(yes/y/no): timeout(1h min)" var;
-if ["$var" == "yes" ] || [ "$var" == "y" ]; then
+if ["$var" = "yes" ] || [ "$var" = "y" ]; then
 python -m pip install;
 rapidscan.py --update;
 rapidscan.py $1 | tee rapidscan.txt;
