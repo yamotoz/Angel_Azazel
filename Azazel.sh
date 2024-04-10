@@ -144,7 +144,7 @@ head -n 5 subss.txt | tee top5.txt;
 sniper -f top5.txt -m airstrike -w $1 | tee snipertop5.txt;
 rm subss.txt;
 else
-echo "<ERROR>"
+echo "<ERROR>";
 fi
 
 #nikto
