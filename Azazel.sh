@@ -131,7 +131,7 @@ fi
 #sniper
 sniper -u; 
 sniper -t $1 -m webscan | tee snipersimples.txt;
-resp= "";
+resp="";
 read -p "do yoy want to run full scan in all subdomains(yes/y/n)? timeout(2h min!)";
 if ["$resp" == "y" ] || ["$resp" == "yes"];then
 subfinder -d $1 | tee subss.txt;
@@ -239,7 +239,7 @@ wapiti --level 1 -u $serv://$1 -m all --color -v 1 --scan-force insane -f html -
 
 #rapidscan
 clear;
-var = "";
+var="";
 read -p "want to run rapidscan?(yes/y/no): timeout(1h min)" var;
 if ["$var" == "yes" ] || [ "$var" == "y" ]; then
 python -m pip install;
