@@ -119,8 +119,8 @@ fi
 sniper -u; 
 sniper -t $1 -m webscan | tee snipersimples.txt;
 subfinder -d $1 | tee subss.txt;
-sni=$(head -n 3 subss.txt);
-sniper -f $sni -m airstrike -w $1 | tee sniperFull.txt;
+head -n 3 subss.txt | tee cometa5.txt;
+sniper -f cometa5.txt -m airstrike -w $1 | tee sniperFull.txt;
 rm subss.txt;
 #nikto
 nikto -h https://$1 -timeout 1 -Tuning 1234567890abcde -Plugins 1234 -output nikto.txt;
