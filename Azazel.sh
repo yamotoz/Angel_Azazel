@@ -122,10 +122,9 @@ wp="";
 read -p "want to run wpscan?(yes/y/no)" wp;
 if ["$wp" == "yes" ] || [ "$wp" == "y" ]; then
 wpscan $serv://$1 | tee wpscan.txt;
-elif  [ "$wp" == "n"] || ["$wp" == "no" ]; then
+else
 sleep 1;
 echo "NEXT STEP";
-else
 fi
 
 
