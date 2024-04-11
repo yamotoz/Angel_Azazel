@@ -170,7 +170,10 @@ dalfox file xss.txt | tee dalfox.txt;
 
 
 #nuclei
-nuclei -list subsgau.txt | tee nuclei.txt;
+cat subsgau.txt | gf interestingsubs | tee nucleisubs.txt;
+nuclei -list nucleisubs.txt -output nuclei.txt;
+rm nucleisubs.txt;
+
 
 
 #vulnx
