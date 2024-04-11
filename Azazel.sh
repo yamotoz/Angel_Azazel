@@ -159,7 +159,6 @@ sniper -f top5.txt -m airstrike -w $1 | tee snipertop5.txt;
 rm subss.txt;
 fi
 
-
 #dalfox 
 subfinder -update;
 subfinder -d $1 | tee subs.txt;
@@ -167,14 +166,6 @@ cat subs.txt | gau | tee subsgau.txt;
 rm subs.txt;
 cat subsgau.txt | gf xss | tee xss.txt;
 dalfox file xss.txt | tee dalfox.txt;
-
-
-#nuclei
-cat subsgau.txt | gf interestingsubs | tee nucleisubs.txt;
-nuclei -list nucleisubs.txt -output nuclei.txt;
-rm nucleisubs.txt;
-
-
 
 #vulnx
 git clone https://github.com/anouarbensaad/VulnX.git;
@@ -264,6 +255,11 @@ wapiti --level 1 -u $serv://$1 -m all --color -v 1 --scan-force insane -f html -
 #nikto
 nikto -h $serv://$1 -output nikto.txt;
 mv nikto.txt vulns;
+
+#nuclei
+cat subsgau.txt | gf interestingsubs | tee nucleisubs.txt;
+nuclei -list nucleisubs.txt -output nuclei.txt;
+rm nucleisubs.txt;
 
 #rapidscan
 clear;
