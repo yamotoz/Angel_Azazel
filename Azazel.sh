@@ -157,9 +157,6 @@ sniper -f top5.txt -m airstrike -w $1 | tee snipertop5.txt;
 rm subss.txt;
 fi
 
-#nikto
-nikto -h $serv://$1  -v 1 -Tuning 123 -Plugins 1234 -output nikto.txt;
-
 
 #dalfox 
 subfinder -update;
@@ -256,6 +253,9 @@ clear;
 cd /root/$file;
 pip3 install wapiti;
 wapiti --level 1 -u $serv://$1 -m all --color -v 1 --scan-force insane -f html -o wapiti.html; 
+
+#nikto
+nikto -h $serv://$1  -v 1 -Tuning 123 -Plugins 1234 -output nikto.txt;
 
 #rapidscan
 clear;
