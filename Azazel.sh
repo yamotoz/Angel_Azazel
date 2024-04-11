@@ -122,9 +122,10 @@ fi
 
 
 #criação da main dentro do root
-cd /root;
-mkdir vulnez;
-cd vulnez;
+file="";
+read -p "name folder to save process:" file;
+mkdir $file;
+cd $file;
 
 
 #wpscan 
@@ -157,7 +158,7 @@ rm subss.txt;
 fi
 
 #nikto
-nikto -h $serv://$1 -Tuning 123 -Plugins 1234 -output nikto.txt;
+nikto -h $serv://$1  -v 1 -Tuning 123 -Plugins 1234 -output nikto.txt;
 
 
 #dalfox 
@@ -178,14 +179,14 @@ git clone https://github.com/anouarbensaad/VulnX.git;
 cd VulnX;
 chmod +x install.sh && bash install.sh;
 vulnx -u $serv://$1 -w -d --dns -e --output vulnx.txt;
-mv vulnx.txt /root/vulnez/;
+mv vulnx.txt /root/$file/;
 mkdir vulns;
 mv vulnx.txt nuclei.txt dalfox.txt vulns;
 
 
 
 #paramspider e iniciando processo de fuzzing
-cd /root/vulnez;
+cd /root/$file;
 mkdir fuzzing;
 git clone https://github.com/0xKayala/ParamSpider;
 cd  ParamSpider;
@@ -193,8 +194,8 @@ pip3 install -r requirements.txt;
 chmod +x paramspider.py;
 python3 paramspider.py --domain $1 --output fuzzINIT.txt;
 cp output;
-mv fuzzINIT.txt /root/vulnez/fuzzing/;
-cd  /root/vulnez/fuzzing;
+mv fuzzINIT.txt /root/$file/fuzzing/;
+cd  /root/$file/fuzzing;
 
 
 #criação das pastas e fuzzing de cada tipo
@@ -252,7 +253,7 @@ wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor3 | tee idorL3F.txt;
 
 # wapiti3
 clear;
-cd /root/vulnez;
+cd /root/$file;
 pip3 install wapiti;
 wapiti --level 1 -u $serv://$1 -m all --color -v 1 --scan-force insane -f html -o wapiti.html; 
 
