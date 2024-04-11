@@ -94,6 +94,9 @@ case $2 in
 -all|-ALL)cd /root; go install github.com/hahwul/dalfox/v2@latest; mv /root/go/bin/dalfox /bin;
 cd /root; git clone https://github.com/jakeelong/sniper; cd sniper && bash install.sh && sniper -u; cd /root;
 git clone https://github.com/xmendez/wfuzz;
+cd wfuzz;
+pip install wfuzz;
+cd ..;
 go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest;
 go get -u github.com/tomnomnom/gf;
 subfinder -update;
