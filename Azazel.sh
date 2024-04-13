@@ -209,41 +209,41 @@ cd xss;
 #fuzzing de XSS das tres primeiras linhas
 wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Fuzzing/XSS-Fuzzing;
 xss1=$(tail -n +1 xss.txt | head -n 1);
-wfuzz --hc 404,400,406 -c -z file,XSS-Fuzzing $xss1 | tee xssL1F.txt;
+wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss1 | tee xssL1F.txt;
 xss2=$(tail -n +2 xss.txt | head -n 1);
-wfuzz --hc 404,400,406 -c -z file,XSS-Fuzzing $xss2 | tee xssL2F.txt;
+wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss2 | tee xssL2F.txt;
 xss3=$(tail -n +3 xss.txt | head -n 1);
-wfuzz --hc 404,400,406 -c -z file,XSS-Fuzzing $xss3 | tee xssL3F.txt;
+wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss3 | tee xssL3F.txt;
 cd ..;
 #fuzzing de redirect das tres primeiras linhas
 cd redirect;
 wget https://raw.githubusercontent.com/yamotoz/Angel_Azazel/main/payload_redirect.txt;
 redi1=$(tail -n +1 redirect.txt | head -n 1);
-wfuzz --hc 404,400,406 -c -z file,payload_redirect.txt $redi1 | tee rediL1F.txt;
+wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi1 | tee rediL1F.txt;
 redi2=$(tail -n +2 redirect.txt | head -n 1);
-wfuzz --hc 404,400,406 -c -z file,payload_redirect.txt $redi2 | tee rediL2F.txt;
+wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi2 | tee rediL2F.txt;
 redi3=$(tail -n +3 redirect.txt | head -n 1);
-wfuzz --hc 404,400,406 -c -z file,payload_redirect.txt $redi3 | tee rediL3F.txt;
+wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi3 | tee rediL3F.txt;
 cd ..;
 #LFI fuzzing
 cd lfi;
 wget https://github.com/danielmiessler/SecLists/blob/master/Fuzzing/LFI/LFI-linux-and-windows_by-1N3%40CrowdShield.txt;
 lfi1=$(tail -n +1 lfi.txt | head -n 1);
-wfuzz --hc 404,400,406 -c -z file,LFI-linux-and-windows_by-1N3%40CrowdShield.txt $lfi1 | tee lfiL1F.txt;
+wfuzz --hc 404,400,406 -c -v -z file,LFI-linux-and-windows_by-1N3%40CrowdShield.txt $lfi1 | tee lfiL1F.txt;
 lfi2=$(tail -n +2 lfi.txt | head -n 1);
-wfuzz --hc 404,400,406 -c -z file,LFI-linux-and-windows_by-1N3%40CrowdShield.txt $lfi2 | tee lfiL2F.txt;
+wfuzz --hc 404,400,406 -c -v -z file,LFI-linux-and-windows_by-1N3%40CrowdShield.txt $lfi2 | tee lfiL2F.txt;
 lfi3=$(tail -n +3 lfi.txt | head -n 1);
-wfuzz --hc 404,400,406 -c -z file,LFI-linux-and-windows_by-1N3%40CrowdShield.txt $lfi3 | tee lfiL3F.txt;
+wfuzz --hc 404,400,406 -c -v -z file,LFI-linux-and-windows_by-1N3%40CrowdShield.txt $lfi3 | tee lfiL3F.txt;
 cd ..;
 # Idor Fuzzing
 cd idor;
 crunch 1 5 -f /usr/share/crunch/charset.lst numeric -o idorP.txt;
 idor1=$(tail -n +1 lfi.txt | head -n 1);
-wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor1 | tee idorL1F.txt;
+wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor1 | tee idorL1F.txt;
 idor2=$(tail -n +2 lfi.txt | head -n 1);
-wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor2 | tee idorL2F.txt;
+wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor2 | tee idorL2F.txt;
 idor3=$(tail -n +3 lfi.txt | head -n 1);
-wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor3 | tee idorL3F.txt;
+wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor3 | tee idorL3F.txt;
 mv xss idor lfi redirect fuzzing;
 
 
