@@ -159,13 +159,13 @@ sniper -f top5.txt -m airstrike -w $1 | tee snipertop5.txt;
 rm subss.txt;
 fi
 
-#dalfox 
-#subfinder -update;
-#subfinder -d $1 | tee subs.txt;
-#cat subs.txt | gau | tee subsgau.txt;
-#rm subs.txt;
-#cat subsgau.txt | gf xss | tee xss.txt;
-#dalfox file xss.txt | tee dalfox.txt;
+dalfox 
+subfinder -update;
+subfinder -d $1 | tee subs.txt;
+cat subs.txt | gau | tee subsgau.txt;
+rm subs.txt;
+cat subsgau.txt | gf xss | tee xss.txt;
+dalfox file xss.txt | tee dalfox.txt;
 
 #vulnx
 git clone https://github.com/anouarbensaad/VulnX.git;
@@ -260,6 +260,7 @@ mv nikto.txt vulns;
 #nuclei
 cat subsgau.txt | gf interestingsubs | tee nucleisubs.txt;
 nuclei -list nucleisubs.txt -output nuclei.txt;
+mv nuclei vulns;
 rm nucleisubs.txt;
 
 #rapidscan
@@ -267,9 +268,9 @@ clear;
 var="";
 read -p "want to run rapidscan?(yes/y/no): timeout(1h min)" var;
 if ["$var" = "yes" ] || [ "$var" = "y" ]; then
-python -m pip install;
+python3 -m pip install;
 rapidscan.py --update;
-rapidscan.py $1 | tee rapidscan.txt;
+rapidscan.py $1 --skip dmitry --skip theHarvester | tee rapidscan.txt;
 else    
 sleep 1;
 clear;
