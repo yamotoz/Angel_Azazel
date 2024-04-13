@@ -154,7 +154,7 @@ sniper -f subss.txt -m airstrike -w $1 | tee sniperFull.txt;
 rm subss.txt;
 else
 subfinder -d $1 | tee subss.txt;
-head -n 5 subss.txt | tee top5.txt;
+head -n 1 subss.txt | tee top5.txt;
 sniper -f top5.txt -m airstrike -w $1 | tee snipertop5.txt;
 rm subss.txt;
 fi
@@ -170,7 +170,7 @@ dalfox file xss.txt | tee dalfox.txt;
 #vulnx
 git clone https://github.com/anouarbensaad/VulnX.git;
 cd VulnX;
-chmod +x install.sh && bash install.sh;
+chmod +x install.sh && bash install.sh && bash update.sh && pip install requirements.txt;
 vulnx -u $serv://$1 -w -d --dns -e --output vulnx.txt;
 mv vulnx.txt ..;
 cd ..;
@@ -190,7 +190,6 @@ cp output;
 mv fuzzINIT.txt ..;
 cd ..;
 mv fuzzINIT.txt ..;
-cd ..;
 
 
 #criação das pastas e fuzzing de cada tipo
