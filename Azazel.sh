@@ -186,7 +186,7 @@ cd  ParamSpider;
 pip3 install -r requirements.txt;
 chmod +x paramspider.py;
 python3 paramspider.py --domain $1 --output fuzzINIT.txt;
-cp output;
+cd output;
 mv fuzzINIT.txt ..;
 cd ..;
 mv fuzzINIT.txt ..;
@@ -243,6 +243,7 @@ idor2=$(tail -n +2 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor2 | tee idorL2F.txt;
 idor3=$(tail -n +3 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -z file,idorP.txt $idor3 | tee idorL3F.txt;
+mv xss idor lfi redirect fuzzing;
 
 
 # wapiti3
