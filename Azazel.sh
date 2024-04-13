@@ -190,6 +190,7 @@ cd output;
 mv fuzzINIT.txt ..;
 cd ..;
 mv fuzzINIT.txt ..;
+cd ..;
 
 
 #criação das pastas e fuzzing de cada tipo
