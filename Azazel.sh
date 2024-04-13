@@ -160,12 +160,12 @@ rm subss.txt;
 fi
 
 #dalfox 
-subfinder -update;
-subfinder -d $1 | tee subs.txt;
-cat subs.txt | gau | tee subsgau.txt;
-rm subs.txt;
-cat subsgau.txt | gf xss | tee xss.txt;
-dalfox file xss.txt | tee dalfox.txt;
+#subfinder -update;
+#subfinder -d $1 | tee subs.txt;
+#cat subs.txt | gau | tee subsgau.txt;
+#rm subs.txt;
+#cat subsgau.txt | gf xss | tee xss.txt;
+#dalfox file xss.txt | tee dalfox.txt;
 
 #vulnx
 git clone https://github.com/anouarbensaad/VulnX.git;
