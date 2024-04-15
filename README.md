@@ -12,6 +12,7 @@ scripts that we will use here:
 -VulnX
 -paramspider
 -wfuzz
+-uro
 
 usage:
 bash Black_widow.sh url(without https://) -all

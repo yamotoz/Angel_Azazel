@@ -162,7 +162,7 @@ fi
 #dalfox 
 subfinder -update;
 subfinder -d $1 | tee subs.txt;
-cat subs.txt | gau | tee subsgau.txt;
+cat subs.txt | gau | uro | tee subsgau.txt;
 rm subs.txt;
 cat subsgau.txt | gf xss | tee xss.txt;
 dalfox file xss.txt | tee dalfox.txt;
@@ -258,7 +258,7 @@ nikto -h $serv://$1 -output nikto.txt;
 mv nikto.txt vulns;
 
 #nuclei
-cat subsgau.txt | gf interestingsubs | tee nucleisubs.txt;
+cat subsgau.txt  | uro | gf interestingsubs | tee nucleisubs.txt;
 nuclei -list nucleisubs.txt -severity low,medium,high,critical -output nuclei.txt;
 mv nuclei vulns;
 rm nucleisubs.txt;
