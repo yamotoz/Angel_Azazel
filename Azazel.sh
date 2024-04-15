@@ -159,7 +159,7 @@ sniper -f top5.txt -m airstrike -w $1 | tee snipertop5.txt;
 rm subss.txt;
 fi
 
-dalfox 
+#dalfox 
 subfinder -update;
 subfinder -d $1 | tee subs.txt;
 cat subs.txt | gau | tee subsgau.txt;
@@ -259,7 +259,7 @@ mv nikto.txt vulns;
 
 #nuclei
 cat subsgau.txt | gf interestingsubs | tee nucleisubs.txt;
-nuclei -list nucleisubs.txt -output nuclei.txt;
+nuclei -list nucleisubs.txt -severity low,medium,high,critical -output nuclei.txt;
 mv nuclei vulns;
 rm nucleisubs.txt;
 
