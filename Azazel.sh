@@ -104,6 +104,9 @@ python3 -m pip install;
 *) echo "INSTALL OFF";;
 esac
 apt-get update -y; apt-get upgrade -y
+
+
+
 #question
 clear;
 serv="";
@@ -115,11 +118,16 @@ serv="https";
 else
 echo "ERROR : Please enter correct number."; exit
 fi
+
+
 #criação da main
 file="";
 read -p "name folder to save process:" file;
 mkdir $file;
 cd $file;
+
+
+
 #wpscan 
 clear;
 wp="";
@@ -130,6 +138,10 @@ else
 sleep 1;
 echo "NEXT STEP";
 fi
+
+
+
+
 #sniper
 sniper -u; 
 sniper -t $1 -m webscan | tee snipersimples.txt;
@@ -146,6 +158,8 @@ head -n 1 subss.txt | tee top5.txt;
 sniper -f top5.txt -m airstrike -w $1 | tee snipertop5.txt;
 rm subss.txt;
 fi
+
+
 #dalfox 
 subfinder -update;
 subfinder -d $1 | tee subs.txt;
@@ -156,6 +170,8 @@ cat subsgau.txt | gf xss | tee xss.txt;
 dalfox file xss.txt | tee dalfox.txt;
 cat xss.txt | dalfox pipe --skip-bav | tee dalfox.txt;
 
+
+
 #vulnx
 git clone https://github.com/anouarbensaad/VulnX.git;
 cd VulnX;
@@ -165,6 +181,9 @@ mv vulnx.txt ..;
 cd ..;
 mkdir vulns;
 mv vulnx.txt nuclei.txt dalfox.txt vulns;
+
+
+
 #paramspider e iniciando processo de fuzzing
 mkdir fuzzing;
 git clone https://github.com/0xKayala/ParamSpider;
@@ -177,6 +196,8 @@ mv fuzzINIT.txt ..;
 cd ..;
 mv fuzzINIT.txt ..;
 cd ..;
+
+
 #criação das pastas e fuzzing de cada tipo
 mkdir xss redirect lfi idor;
 cat fuzzINIT.txt | gf xss | tee xss.txt;
@@ -187,8 +208,12 @@ cat  fuzzINIT.txt | gf idor | tee idor.txt;
 mv  idor.txt idor;
 cat fuzzINIT.txt | gf lfi | tee lfi.txt;
 mv lfi.txt lfi;
-cd xss;
+
+
+
+
 #fuzzing de XSS das tres primeiras linhas
+cd xss;
 wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Fuzzing/XSS-Fuzzing;
 xss1=$(tail -n +1 xss.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss1 | tee xssL1F.txt;
@@ -227,27 +252,54 @@ wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor2 | tee idorL2F.txt;
 idor3=$(tail -n +3 lfi.txt | head -n 1);
 wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor3 | tee idorL3F.txt;
 mv xss idor lfi redirect fuzzing;
+
+
+
 # wapiti3
 clear;
 cd ..;
 pip3 install wapiti;
 wapiti --level 1 -u $serv://$1 -m all --color -v 1 --scan-force insane -f html -o wapiti.html; 
-#nikto
-nikto -h $serv://$1 -output nikto.txt;
-mv nikto.txt vulns;
+
+
+
+#MagicRecon
+git clone https://github.com/robotshell/magicRecon;
+cd magicRecon;
+chmod +x install.sh;
+./install.sh;
+apt-get autoremove -y;
+./magicrecon.sh -d $1 -v | tee magicrecoFILE.txt;
+mv magicrecoFILE.txt ..;
+cd ..;
+
+
 #nuclei
-cat subsgau.txt  | uro | gf interestingsubs | tee nucleisubs.txt;
-nuclei -list nucleisubs.txt -severity low,medium,high,critical -output nuclei.txt;
-mv nuclei vulns;
-rm nucleisubs.txt;
+clear;
+nuc="";
+read -p "want to run rapidscan?(yes/y/no): timeout(1h min)" nuc;
+if ["$nuc" = "yes" ] || [ "$nuc" = "y" ]; then
+    cat subsgau.txt  | uro | gf interestingsubs | tee nucleisubs.txt;
+    nuclei -list nucleisubs.txt -severity low,medium,high,critical -output nuclei.txt;
+    mv nuclei vulns;
+    rm nucleisubs.txt;
+else
+sleep 1;
+echo "NEXT STEP!!!!!!!!!!";    
+fi
+
+
+
+
+
 #rapidscan
 clear;
 var="";
 read -p "want to run rapidscan?(yes/y/no): timeout(1h min)" var;
 if ["$var" = "yes" ] || [ "$var" = "y" ]; then
-python3 -m pip install;
-rapidscan.py --update;
-rapidscan.py $1 --skip dmitry --skip theHarvester | tee rapidscan.txt;
+    python3 -m pip install;
+    rapidscan.py --update;
+    rapidscan.py $1 --skip dmitry --skip theHarvester | tee rapidscan.txt;
 else    
 sleep 1;
 clear;
