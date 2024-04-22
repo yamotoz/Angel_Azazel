@@ -167,7 +167,6 @@ cat subs.txt | gau | uro | tee subsgau.txt;
 cat subs.txt | gau | uro | httpx -silent | tee subsgau.txt;
 rm subs.txt;
 cat subsgau.txt | gf xss | tee xss.txt;
-dalfox file xss.txt | tee dalfox.txt;
 cat xss.txt | dalfox pipe --skip-bav | tee dalfox.txt;
 
 
