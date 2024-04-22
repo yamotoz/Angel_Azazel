@@ -149,11 +149,11 @@ resp="";
 clear;
 read -p "do yoy want to run full scan in all subdomains(yes/y/n)? timeout(2h min!):" resp;
 if ["$resp" = "y" ] || ["$resp" = "yes"]; then
-subfinder -d $1 | tee subss.txt;
+subfinder -d $1 | httpx -silent | tee subss.txt;
 sniper -f subss.txt -m airstrike -w $1 | tee sniperFull.txt;
 rm subss.txt;
 else
-subfinder -d $1 | tee subss.txt;
+subfinder -d $1 | httpx -silent | tee subss.txt;
 head -n 1 subss.txt | tee top5.txt;
 sniper -f top5.txt -m airstrike -w $1 | tee snipertop5.txt;
 rm subss.txt;
