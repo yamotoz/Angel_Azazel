@@ -1,8 +1,13 @@
+## Angel Azazel
+A script focused on website analysis, it will do both the recognition part of the website and the vulnerability analysis of the website or related IP
 
-<img src="src/bird.jpg">
- ## A script focused on analyzing all possible vulnerabilities in a site from  
 
- ## scripts that we will use here:
+<img src="src/anjo.jpg">
+
+
+## A script focused on analyzing all possible vulnerabilities in a site from  
+
+scripts that we will use here:
 - [x] sniper
 - [x] nikto
 - [x] dalfox
@@ -16,9 +21,11 @@
 - [x] uro
 
 ## usage:
+```bash
 bash Black_widow.sh url(without https://) -all
+```
 
--all = install all tools for run the script(opcional) 
+-  -all = **install all tools for run the script(opcional)** 
 
 NOTE: it is necessary that you install the gf and have inside
 the .gf folder the xss extension to work properly.
