@@ -1,4 +1,5 @@
 ## Angel Azazel
+ <img src="https://img.shields.io/badge/Status-Beta-orange"> <img src="https://img.shields.io/badge/Licence-MIT-yellowgreen"><img src="https://img.shields.io/badge/Download-Now-green">
 A script focused on analyzing the website, it will do both the recognition part of the website and the vulnerability analysis of the website or IP, the purpose of the script is to analyze the website, recognize vulnerable parameters and confirm if there are any flaws in it, the script will save all data within the folder whose same was said.
 
 
