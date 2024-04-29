@@ -34,3 +34,7 @@ the .gf folder the xss extension to work properly.
 NOTE: all the tools I use are already in cry_of_roses.
 
 NOTE: this script need to install in root for run.
+
+
+## information
+I do not take responsibility for the **misuse of the program.** This is a script for legal use and to study the programming and pentest area, never use the installed tools to **harm**, **destroy**, **adulterate**, **tarnish** or **belittle anyone's image**
