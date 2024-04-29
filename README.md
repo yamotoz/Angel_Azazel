@@ -1,20 +1,21 @@
-A script focused on analyzing all possible vulnerabilities in a site from 
- 8 tools 
 
-scripts that we will use here:
--sniper
--nikto
--dalfox
--nuclei
--rapidscan
--subfinder
--gf
--VulnX
--paramspider
--wfuzz
--uro
+<img src="src/bird.jpg">
+ ## A script focused on analyzing all possible vulnerabilities in a site from  
 
-usage:
+ ## scripts that we will use here:
+- [x] sniper
+- [x] nikto
+- [x] dalfox
+- [x] nuclei
+- [x] rapidscan
+- [x] subfinder
+- [x] gf
+- [x] VulnX
+- [x] paramspider
+- [x] wfuzz
+- [x] uro
+
+## usage:
 bash Black_widow.sh url(without https://) -all
 
 -all = install all tools for run the script(opcional) 
