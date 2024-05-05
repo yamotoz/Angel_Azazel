@@ -1,4 +1,4 @@
-## Angel Azazel
+## Shadow Princess
  <img src="https://img.shields.io/badge/Status-Beta-orange"> <img src="https://img.shields.io/badge/Licence-MIT-yellowgreen"><img src="https://img.shields.io/badge/Download-Now-green">
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bash/bash-original.svg"  height=30 width=40 />
           
@@ -26,7 +26,7 @@ scripts that we will use here:
 
 ## usage:
 ```bash
-bash Black_widow.sh url(without https://) -all
+bash Shadow_princess.sh url(without https://) -all
 ```
 
 -  -all = **install all tools for run the script(opcional)** 
