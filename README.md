@@ -23,13 +23,18 @@ scripts that we will use here:
 - [x] paramspider
 - [x] wfuzz
 - [x] uro
+- [x] sqlifinder
+- [x] anew
+- [x] uro
+- [x] openredirex
+- [x] logsensor
 
 ## usage:
 ```bash
-bash Shadow_princess.sh url(without https://) -all
+bash Shadow_princess.sh url(without https://) (-OPTIONS)
 ```
 
--  -all = **install all tools for run the script(opcional)** 
+
 
 NOTE: it is necessary that you install the gf and have inside
 the .gf folder the xss extension to work properly.

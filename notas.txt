@@ -1,8 +1,0 @@
-criar modulos e melhor a recepsão do script tanto em parametros quanto em organização
-
-criar modulos sqli, xss, takeover, simples(nmap vuln e nmap automator ou só algum script fraco e simples), redirect, wpscan(inicial)
-com if de api do wpscan para melhor uso
-
-criar a partir de funçoes ou case dependendo
-
-acrescentar tbm Grim e sqlifinder
