@@ -87,3 +87,6 @@ NOTE: this script need to install in root for run.
 <img src="img/shadow01.jpg">
 
 ## GOOD LUCK LITTLE EYE
+
+64
+QmUgY2FyZWZ1bCB3aXRoIGN1cmlvc2l0eSwgc29tZXRpbWVzIGl0IGNhbiBraWxsIHlvdSwgbXkgbGl0dGxlIGJhYnk=
