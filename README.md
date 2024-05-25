@@ -82,3 +82,8 @@ NOTE: this script need to install in root for run.
 -  I do not take responsibility for the **misuse of the program.** This is a script for legal use and to study the programming and pentest area, never use the installed tools to **harm**, **destroy**, **adulterate**, **tarnish** or **belittle anyone's image**
 
 -  Let it be known that I hereby extend my full support and leadership to the creators of the scripts utilized herein, and I attribute **ALL** credits to them. In this script, my sole endeavor lies in their combined utilization to broaden the understanding of vulnerabilities within the pertinent website that the user shall visit.
+
+
+<img src="img/shadow01.jpg">
+
+## GOOD LUCK LITTLE EYE
