@@ -37,33 +37,33 @@ bash Shadow_princess.sh url(without https://) (-OPTIONS)
 ## Options
 
 ```bash
-[*]XSS to try to find xss error
-bash -xss/-x 
+[*]XSS: to try to find xss error
+ -xss/-x 
 ``` 
 
 ```bash
-[*]SQL to try to find sql error
-bash -sqli/-s
+[*]SQL: to try to find sql error
+-sqli/-s
 ```
 
 ```bash
-[*]Takeover to try to find takeover error
-bash takeover/-ta
+[*]Takeover: to try to find takeover error
+takeover/-ta
 ```
 
 ```bash
-[*]IDOR to try to find idor error
-bash -idor/-i
+[*]IDOR: to try to find idor error
+-idor/-i
 ```
 
 ```bash
-[*]RECON  To analyze the website simply and quickly
-bash -recon
+[*]RECON:  To analyze the website simply and quickly
+-recon
 ```
 
 ```bash
-[*]REDIRECT to try to find redirect error
-bash -redirect/-r
+[*]REDIRECT: to try to find redirect error
+-redirect/-r
 ```
 
 
