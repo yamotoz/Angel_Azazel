@@ -144,300 +144,7 @@ dnsenum --noreverse -v fbuni.edu.br | anew dnsenum.txt;
 mv dns.txt dnsenum.txt dns;
 
 
-case $2 in
--x)
-  cd $file;
-  mkdir xss;
-    #dalfox 
-    cat urlsON.txt | gf xss | tee xss.txt;
-    dalfox file xss.txt | tee dalfoxPADRAO.txt;
-    cat xss.txt | dalfox pipe --skip-bav | tee dalfoxBAV.txt;
-    mv dalfoxPADRAO.txt dalfoxBAV.txt xss;
-    cat fuzz.txt | gf xss | anew xssF.txt;
-    wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Fuzzing/XSS-Fuzzing;
-    xss1=$(tail -n +1 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss1 | tee xssL1F.txt;
-    xss2=$(tail -n +2 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss2 | tee xssL2F.txt;
-    xss3=$(tail -n +3 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss3 | tee xssL3F.txt; 
-    #nuclei 
-    nuclei -list xss.txt -severity low,medium,high,critical -t root/nuclei-templates/xss -t root/nuclei-templates/cves.json  -output xssNuclei.txt; 
-    wapiti --level 1 -u $serv://$1 -m xss --color -v 1 --scan-force insane -f html -o wapiti.html; 
-    #implementar modulo do nuclei de xss e o mudulo de vulnerabilidade(dentro do kali)
-    mv xssL1F.txt xssL2F.txt xssL3F.txt xss.txt fuzz.txt xssF.txt xssNuclei xss;
-    cd xss;
-    mkdir files;
-    mv fuzz.txt xss.txt xssF.txt files;
-    cd ..;
-     banner
-        ;;
--s)
-  cd $file;
-  mkdir sqli;
-  cp urlsON.txt sqli;
-  cd sqli;
-  git clone https://github.com/americo/sqlifinder;
-  cd sqlifinder;
-  pip3 install -r requirements.txt;
-  python3 sqlifinder -d $serv://$1 | anew sqli.txt;
-  python3 sqlifinder -d $serv://$1 -s | anew sqlisubs.txt;
-  mv sqli.txt sqlisubs.txt ..;
-  cat urlsON.txt | gf sqli | anew sqlii.txt;
-  sqlmap -m sqlii.txt --level=5 --risk=3 --dbs | anew sqlmap.txt;
-  wapiti --level 1 -u $serv://$1 -m blindsql sql --color -v 1 --scan-force insane -f html -o wapitisql.html;
-  mv wapitisql.html ..;
-  cd ..;
-  mv wapitisql.html sqli;
-  git clone https://github.com/Mr-Robert0/Logsensor.git;
-  cd Logsensor ;
-  sudo chmod +x logsensor.py install.sh;
-  pip install -r requirements.txt;
-  ./install.sh -y;
-  python3 logsensor.py -f urlsON.txt --login | anew loginsPAGES.txt;
-  rm -rf Logsensor;
-  cd ..;
-  cd ..;
-  mv loginPAGES.txt sqli;
-   banner
-        ;;
--re)
-      cd $file;
-       mkdir redirect;
-       wget https://raw.githubusercontent.com/yamotoz/Angel_Azazel/main/payload_redirect.txt;
-       cat fuzz.txt | gf redirect | anew redirect.txt;
-       redi1=$(tail -n +1 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi1 | anew rediL1F.txt;
-       redi2=$(tail -n +2 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi2 | anew rediL2F.txt;
-       redi3=$(tail -n +3 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi3 | anew rediL3F.txt;
-       git clone https://github.com/devanshbatham/openredirex;
-       cd openredirex;
-       sudo chmod +x setup.sh;
-       ./setup.sh -y;
-       cat redirect.txt |  openredirex -p payload_redirect.txt -k "FUZZ" -c 50 | anew rediX.txt;
-       wapiti --level 1 -u $serv://$1 -m redirect --color -v 1 --scan-force insane -f html -o wapiti.html; 
-       mv redirect.txt rediL1F.txt rediL2F.txt rediL3F.txt rediX.txt wapiti.html redirect;
-        banner
-        ;;
--ta)
-        cd $file;
-        mkdir takeover;
-        subjack -w urlsON.txt -v | anew subjack.txt;
-        subzy r --targets urlsON.txt | anew subzy.txt;
-        wapiti --level 1 -u $serv://$1 -m takeover --color -v 1 --scan-force insane -f html -o wapiti.html;   
-        mv subjack.txt subzy.txt wapiti.html takeover;
-         banner
-        ;;
--i)
-       cd $file;
-        mkdir idor;
-        #payload
-        crunch 1 5 -f /usr/share/crunch/charset.lst numeric -o idorPay.txt;
-        cat fuzz.txt | gf idor | anew idorr.txt;
-        idor1=$(tail -n +1 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor1 | anew idorL1F.txt;
-        idor2=$(tail -n +2 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor2 | anew idorL2F.txt;
-        idor3=$(tail -n +3 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor3 | anew idorL3F.txt;
-        mv idorL1F.txt idorL2F.txt idorL3F.txt idorPay.txt idorr.txt idor;
-         banner
-        ;;
-    -sim)
-    cd $file;
-           mkdir simple;
-    #magic recon
-      cp urlsON.txt simple;
-      git clone https://github.com/robotshell/magicRecon;
-      cd magicRecon;
-      chmod +x install.sh;
-      ./install.sh -y;
-      ./magicrecon.sh -l urlsON.txt -v | anew magirecon.txt;
-      mv magiscrecon.txt ..;
-      rm -rf magicRecon;
-      cd ..;
-      
-      #sniper
-      #mudar para 5 o 1 abaixo para finalizar o script 
-      head -n 1 subss.txt | anew top5.txt;
-      sniper -f top5.txt -m airstrike -w $1 | anew snipertop5.txt;
-      rm subss.txt;
-      mv magicrecon.txt snipertop5.txt simple;
- banner
-        ;;
-    -recon)
-    cd $file;
-         mkdir recon;
-  #wapiti
-    pip3 install wapiti;
-    wapiti --level 1 -u $serv://$1 -m all --color -v 1 --scan-force insane -f html -o wapiti.html; 
-
-  #aquatone
-  cat urlsON.txt | aquatone ;
-
-  #nmap vuln
-  nmap -T4 -sV -sC -Pn --open -v --script vuln | anew nmap.txt;
-  mv headers html screenshots nmap.txt wapiti.html recon;  
- banner
-    ;;
-    *)
-        echo "ERROR OF SINTAXE"
-        exit 1
-        ;;
-esac
-
-
-case $3 in
-
-    -xss|-x)
-       cd $file;
-          mkdir xss;
-  cd xss;
-    #dalfox 
-    cat urlsON.txt | gf xss | tee xss.txt;
-    dalfox file xss.txt | tee dalfoxPADRAO.txt;
-    cat xss.txt | dalfox pipe --skip-bav | tee dalfoxBAV.txt;
-    mv dalfoxPADRAO.txt dalfoxBAV.txt xss;
-    cat fuzz.txt | gf xss | anew xssF.txt;
-    wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Fuzzing/XSS-Fuzzing;
-    xss1=$(tail -n +1 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss1 | tee xssL1F.txt;
-    xss2=$(tail -n +2 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss2 | tee xssL2F.txt;
-    xss3=$(tail -n +3 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss3 | tee xssL3F.txt; 
-    #nuclei 
-    nuclei -list xss.txt -severity low,medium,high,critical -t root/nuclei-templates/xss -t root/nuclei-templates/cves.json  -output xssNuclei.txt; 
-    wapiti --level 1 -u $serv://$1 -m xss --color -v 1 --scan-force insane -f html -o wapiti.html; 
-    #implementar modulo do nuclei de xss e o mudulo de vulnerabilidade(dentro do kali)
-    mv xssL1F.txt xssL2F.txt xssL3F.txt xss.txt fuzz.txt xssF.txt xssNuclei xss;
-    cd xss;
-    mkdir files
-    mv fuzz.txt xss.txt xssF.txt files;
-    cd ..;
-     banner
-        ;;
-    -sqli|-s)
-    cd $file;
-         mkdir sqli;
-  cp urlsON.txt sqli;
-  cd sqli;
-  git clone https://github.com/americo/sqlifinder;
-  cd sqlifinder;
-  pip3 install -r requirements.txt;
-  python3 sqlifinder -d $serv://$1 | anew sqli.txt;
-  python3 sqlifinder -d $serv://$1 -s | anew sqlisubs.txt;
-  mv sqli.txt sqlisubs.txt ..;
-  cat urlsON.txt | gf sqli | anew sqlii.txt;
-  sqlmap -m sqlii.txt --level=5 --risk=3 --dbs | anew sqlmap.txt;
-  wapiti --level 1 -u $serv://$1 -m blindsql sql --color -v 1 --scan-force insane -f html -o wapitisql.html;
-  mv wapitisql.html ..;
-  cd ..;
-  mv wapitisql.html sqli;
-  git clone https://github.com/Mr-Robert0/Logsensor.git;
-  cd Logsensor ;
-  sudo chmod +x logsensor.py install.sh;
-  pip install -r requirements.txt;
-  ./install.sh -y;
-  python3 logsensor.py -f urlsON.txt --login | anew loginsPAGES.txt;
-  rm -rf Logsensor;
-  cd ..;
-  cd ..;
-  mv loginPAGES.txt sqli;
-   banner
-        ;;
-    -redirect|-re)
-    cd $file;
-        r mkdir redirect;
-       wget https://raw.githubusercontent.com/yamotoz/Angel_Azazel/main/payload_redirect.txt;
-       cat fuzz.txt | gf redirect | anew redirect.txt;
-       redi1=$(tail -n +1 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi1 | anew rediL1F.txt;
-       redi2=$(tail -n +2 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi2 | anew rediL2F.txt;
-       redi3=$(tail -n +3 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi3 | anew rediL3F.txt;
-       git clone https://github.com/devanshbatham/openredirex;
-       cd openredirex;
-       sudo chmod +x setup.sh;
-       ./setup.sh -y;
-       cat redirect.txt |  openredirex -p payload_redirect.txt -k "FUZZ" -c 50 | anew rediX.txt;
-       wapiti --level 1 -u $serv://$1 -m redirect --color -v 1 --scan-force insane -f html -o wapiti.html; 
-       mv redirect.txt rediL1F.txt rediL2F.txt rediL3F.txt rediX.txt wapiti.html redirect;
-        banner
-        ;;
-    -takeover|-ta)
-    cd $file;
-        mkdir takeover;
-        subjack -w urlsON.txt -v | anew subjack.txt;
-        subzy r --targets urlsON.txt | anew subzy.txt;
-        wapiti --level 1 -u $serv://$1 -m takeover --color -v 1 --scan-force insane -f html -o wapiti.html;   
-        mv subjack.txt subzy.txt wapiti.html takeover;
-         banner
-        ;;
-    -idor|-i)
-    cd $file;
-         mkdir idor;
-        #payload
-        crunch 1 5 -f /usr/share/crunch/charset.lst numeric -o idorPay.txt;
-        cat fuzz.txt | gf idor | anew idorr.txt;
-        idor1=$(tail -n +1 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor1 | anew idorL1F.txt;
-        idor2=$(tail -n +2 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor2 | anew idorL2F.txt;
-        idor3=$(tail -n +3 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor3 | anew idorL3F.txt;
-        mv idorL1F.txt idorL2F.txt idorL3F.txt idorPay.txt idorr.txt idor;
-         banner
-        ;;
-    -simple|-sim)
-    cd $file;
-          mkdir simple;
-    #magic recon
-      cp urlsON.txt simple;
-      git clone https://github.com/robotshell/magicRecon;
-      cd magicRecon;
-      chmod +x install.sh;
-      ./install.sh -y;
-      ./magicrecon.sh -l urlsON.txt -v | anew magirecon.txt;
-      mv magiscrecon.txt ..;
-      rm -rf magicRecon;
-      cd ..;
-      
-      #sniper
-      #mudar para 5 o 1 abaixo para finalizar o script 
-      head -n 1 subss.txt | anew top5.txt;
-      sniper -f top5.txt -m airstrike -w $1 | anew snipertop5.txt;
-      rm subss.txt;
-      mv magicrecon.txt snipertop5.txt simple;
- banner
-        ;;
-    -recon)
-    cd $file;
-        mkdir recon;
-  #wapiti
-    pip3 install wapiti;
-    wapiti --level 1 -u $serv://$1 -m all --color -v 1 --scan-force insane -f html -o wapiti.html; 
-
-  #aquatone
-  cat urlsON.txt | aquatone ;
-
-  #nmap vuln
-  nmap -T4 -sV -sC -Pn --open -v --script vuln | anew nmap.txt;
-  mv headers html screenshots nmap.txt wapiti.html recon;  
- banner
-        ;;
-    *)
-        echo "ERROR OF SINTAXE"
-        exit 1
-        ;;
-esac
-
-
-case $4 in
-    -xss|-x)
+xss(){
    cd $file;
   mkdir xss;
     #dalfox 
@@ -463,104 +170,110 @@ case $4 in
     mv fuzz.txt xss.txt xssF.txt files;
     cd ..;
      banner
-        ;;
-    -sqli|-s)
-    cd $file;
-         mkdir sqli;
-  cp urlsON.txt sqli;
-  cd sqli;
-  git clone https://github.com/americo/sqlifinder;
-  cd sqlifinder;
-  pip3 install -r requirements.txt;
-  python3 sqlifinder -d $serv://$1 | anew sqli.txt;
-  python3 sqlifinder -d $serv://$1 -s | anew sqlisubs.txt;
-  mv sqli.txt sqlisubs.txt ..;
-  cat urlsON.txt | gf sqli | anew sqlii.txt;
-  sqlmap -m sqlii.txt --level=5 --risk=3 --dbs | anew sqlmap.txt;
-  wapiti --level 1 -u $serv://$1 -m blindsql sql --color -v 1 --scan-force insane -f html -o wapitisql.html;
-  mv wapitisql.html ..;
-  cd ..;
-  mv wapitisql.html sqli;
-  git clone https://github.com/Mr-Robert0/Logsensor.git;
-  cd Logsensor ;
-  sudo chmod +x logsensor.py install.sh;
-  pip install -r requirements.txt;
-  ./install.sh -y;
-  python3 logsensor.py -f urlsON.txt --login | anew loginsPAGES.txt;
-  rm -rf Logsensor;
-  cd ..;
-  cd ..;
-  mv loginPAGES.txt sqli;
-   banner
-        ;;
-    -redirect|-re)
-    cd $file;
-         mkdir redirect;
-       wget https://raw.githubusercontent.com/yamotoz/Angel_Azazel/main/payload_redirect.txt;
-       cat fuzz.txt | gf redirect | anew redirect.txt;
-       redi1=$(tail -n +1 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi1 | anew rediL1F.txt;
-       redi2=$(tail -n +2 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi2 | anew rediL2F.txt;
-       redi3=$(tail -n +3 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi3 | anew rediL3F.txt;
-       git clone https://github.com/devanshbatham/openredirex;
-       cd openredirex;
-       sudo chmod +x setup.sh;
-       ./setup.sh -y;
-       cat redirect.txt |  openredirex -p payload_redirect.txt -k "FUZZ" -c 50 | anew rediX.txt;
-       wapiti --level 1 -u $serv://$1 -m redirect --color -v 1 --scan-force insane -f html -o wapiti.html; 
-       mv redirect.txt rediL1F.txt rediL2F.txt rediL3F.txt rediX.txt wapiti.html redirect;
-        banner
-        ;;
-    -takeover|-ta)
-    cd $file;
-        mkdir takeover;
-        subjack -w urlsON.txt -v | anew subjack.txt;
-        subzy r --targets urlsON.txt | anew subzy.txt;
-        wapiti --level 1 -u $serv://$1 -m takeover --color -v 1 --scan-force insane -f html -o wapiti.html;   
-        mv subjack.txt subzy.txt wapiti.html takeover;
-         banner
-        ;;
-    -idor|-i)
-    cd $file;
-         mkdir idor;
-        #payload
-        crunch 1 5 -f /usr/share/crunch/charset.lst numeric -o idorPay.txt;
-        cat fuzz.txt | gf idor | anew idorr.txt;
-        idor1=$(tail -n +1 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor1 | anew idorL1F.txt;
-        idor2=$(tail -n +2 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor2 | anew idorL2F.txt;
-        idor3=$(tail -n +3 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor3 | anew idorL3F.txt;
-        mv idorL1F.txt idorL2F.txt idorL3F.txt idorPay.txt idorr.txt idor;
-        banner
-        ;;
-    -simple|-sim)
-    cd $file;
-          mkdir simple;
-    #magic recon
-      cp urlsON.txt simple;
-      git clone https://github.com/robotshell/magicRecon;
-      cd magicRecon;
-      chmod +x install.sh;
-      ./install.sh -y;
-      ./magicrecon.sh -l urlsON.txt -v | anew magirecon.txt;
-      mv magiscrecon.txt ..;
-      rm -rf magicRecon;
-      cd ..;
-      
-      #sniper
-      #mudar para 5 o 1 abaixo para finalizar o script 
-      head -n 1 subss.txt | anew top5.txt;
-      sniper -f top5.txt -m airstrike -w $1 | anew snipertop5.txt;
-      rm subss.txt;
-      mv magicrecon.txt snipertop5.txt simple;
+}
+
+sqli(){
+cd $file;
+mkdir sqli;
+cp urlsON.txt sqli;
+cd sqli;
+git clone https://github.com/americo/sqlifinder;
+cd sqlifinder;
+pip3 install -r requirements.txt;
+python3 sqlifinder -d $serv://$1 | anew sqli.txt;
+python3 sqlifinder -d $serv://$1 -s | anew sqlisubs.txt;
+mv sqli.txt sqlisubs.txt ..;
+cat urlsON.txt | gf sqli | anew sqlii.txt;
+sqlmap -m sqlii.txt --level=5 --risk=3 --dbs | anew sqlmap.txt;
+wapiti --level 1 -u $serv://$1 -m blindsql sql --color -v 1 --scan-force insane -f html -o wapitisql.html;
+mv wapitisql.html ..;
+cd ..;
+mv wapitisql.html sqli;
+git clone https://github.com/Mr-Robert0/Logsensor.git;
+cd Logsensor ;
+sudo chmod +x logsensor.py install.sh;
+pip install -r requirements.txt;
+./install.sh -y;
+python3 logsensor.py -f urlsON.txt --login | anew loginsPAGES.txt;
+rm -rf Logsensor;
+cd ..;
+cd ..;
+mv loginPAGES.txt sqli;
+banner
+}
+
+redirect(){
+cd $file;
+mkdir redirect;
+wget https://raw.githubusercontent.com/yamotoz/Angel_Azazel/main/payload_redirect.txt;
+cat fuzz.txt | gf redirect | anew redirect.txt;
+redi1=$(tail -n +1 redirect.txt | head -n 1);
+wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi1 | anew rediL1F.txt;
+redi2=$(tail -n +2 redirect.txt | head -n 1);
+wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi2 | anew rediL2F.txt;
+redi3=$(tail -n +3 redirect.txt | head -n 1);
+wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi3 | anew rediL3F.txt;
+git clone https://github.com/devanshbatham/openredirex;
+cd openredirex;
+sudo chmod +x setup.sh;
+./setup.sh -y;
+cat redirect.txt |  openredirex -p payload_redirect.txt -k "FUZZ" -c 50 | anew rediX.txt;
+wapiti --level 1 -u $serv://$1 -m redirect --color -v 1 --scan-force insane -f html -o wapiti.html; 
+mv redirect.txt rediL1F.txt rediL2F.txt rediL3F.txt rediX.txt wapiti.html redirect;
+  banner
+}
+
+takeover(){
+cd $file;
+mkdir takeover;
+subjack -w urlsON.txt -v | anew subjack.txt;
+subzy r --targets urlsON.txt | anew subzy.txt;
+wapiti --level 1 -u $serv://$1 -m takeover --color -v 1 --scan-force insane -f html -o wapiti.html;   
+mv subjack.txt subzy.txt wapiti.html takeover;
+  banner
+}
+idor(){
+cd $file;
+mkdir idor;
+#payload
+crunch 1 5 -f /usr/share/crunch/charset.lst numeric -o idorPay.txt;
+cat fuzz.txt | gf idor | anew idorr.txt;
+idor1=$(tail -n +1 idorr.txt | head -n 1);
+wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor1 | anew idorL1F.txt;
+idor2=$(tail -n +2 idorr.txt | head -n 1);
+wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor2 | anew idorL2F.txt;
+idor3=$(tail -n +3 idorr.txt | head -n 1);
+wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor3 | anew idorL3F.txt;
+mv idorL1F.txt idorL2F.txt idorL3F.txt idorPay.txt idorr.txt idor;
+  banner
+}
+
+simples(){
+cd $file;
+mkdir simple;
+  #magic recon
+    cp urlsON.txt simple;
+    git clone https://github.com/robotshell/magicRecon;
+    cd magicRecon;
+    chmod +x install.sh;
+    ./install.sh -y;
+    ./magicrecon.sh -l urlsON.txt -v | anew magirecon.txt;
+    mv magiscrecon.txt ..;
+    rm -rf magicRecon;
+    cd ..;
+    
+    #sniper
+    #mudar para 5 o 1 abaixo para finalizar o script 
+    head -n 1 subss.txt | anew top5.txt;
+    sniper -f top5.txt -m airstrike -w $1 | anew snipertop5.txt;
+    rm subss.txt;
+    mv magicrecon.txt snipertop5.txt simple;
  banner
-        ;;
-    -recon)
-    cd $file;
+}
+
+
+recon(){
+   cd $file;
          mkdir recon;
   #wapiti
     pip3 install wapiti;
@@ -573,593 +286,209 @@ case $4 in
   nmap -T4 -sV -sC -Pn --open -v --script vuln | anew nmap.txt;
   mv headers html screenshots nmap.txt wapiti.html recon;  
  banner
-        ;;
-    *)
-        echo "ERROR OF SINTAXE"
-        exit 1
-        ;;
+}
+
+case $2 in
+-x)
+ xss
+;;
+-s)
+  sqli
+;;
+-re)
+ redirect 
+;;
+-ta)
+ takeover       
+;;
+-i)
+idor      
+;;
+-sim)
+simples
+;;
+-recon)
+recon
+;;
+*)
+echo "ERROR OF SINTAXE"
+exit 1
+;;
+esac
+
+
+case $3 in
+-x)
+ xss
+;;
+-s)
+  sqli
+;;
+-re)
+ redirect 
+;;
+-ta)
+ takeover       
+;;
+-i)
+idor      
+;;
+-sim)
+  simples
+;;
+-recon)
+  recon
+;;
+*)
+  echo "ERROR OF SINTAXE"
+  exit 1
+;;
+esac
+
+
+case $4 in
+  -x)
+ xss
+;;
+-s)
+  sqli
+;;
+-re)
+ redirect 
+;;
+-ta)
+ takeover       
+;;
+-i)
+idor      
+;;
+-sim)
+  simples
+;;
+-recon)
+  recon
+;;
+*)
+  echo "ERROR OF SINTAXE"
+  exit 1
+;;
 esac
 
 
 case $5 in
-    -xss|-x)
-    cd $file;
-        cd $file;
-  mkdir xss;
-    #dalfox 
-    cat urlsON.txt | gf xss | tee xss.txt;
-    dalfox file xss.txt | tee dalfoxPADRAO.txt;
-    cat xss.txt | dalfox pipe --skip-bav | tee dalfoxBAV.txt;
-    mv dalfoxPADRAO.txt dalfoxBAV.txt xss;
-    cat fuzz.txt | gf xss | anew xssF.txt;
-    wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Fuzzing/XSS-Fuzzing;
-    xss1=$(tail -n +1 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss1 | tee xssL1F.txt;
-    xss2=$(tail -n +2 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss2 | tee xssL2F.txt;
-    xss3=$(tail -n +3 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss3 | tee xssL3F.txt; 
-    #nuclei 
-    nuclei -list xss.txt -severity low,medium,high,critical -t root/nuclei-templates/xss -t root/nuclei-templates/cves.json  -output xssNuclei.txt; 
-    wapiti --level 1 -u $serv://$1 -m xss --color -v 1 --scan-force insane -f html -o wapiti.html; 
-    #implementar modulo do nuclei de xss e o mudulo de vulnerabilidade(dentro do kali)
-    mv xssL1F.txt xssL2F.txt xssL3F.txt xss.txt fuzz.txt xssF.txt xssNuclei xss;
-    cd xss;
-    mkdir files;
-    mv fuzz.txt xss.txt xssF.txt files;
-    cd ..;
-     banner
-        ;;
-    -sqli|-s)
-    cd $file;
-         mkdir sqli;
-  cp urlsON.txt sqli;
-  cd sqli;
-  git clone https://github.com/americo/sqlifinder;
-  cd sqlifinder;
-  pip3 install -r requirements.txt;
-  python3 sqlifinder -d $serv://$1 | anew sqli.txt;
-  python3 sqlifinder -d $serv://$1 -s | anew sqlisubs.txt;
-  mv sqli.txt sqlisubs.txt ..;
-  cat urlsON.txt | gf sqli | anew sqlii.txt;
-  sqlmap -m sqlii.txt --level=5 --risk=3 --dbs | anew sqlmap.txt;
-  wapiti --level 1 -u $serv://$1 -m blindsql sql --color -v 1 --scan-force insane -f html -o wapitisql.html;
-  mv wapitisql.html ..;
-  cd ..;
-  mv wapitisql.html sqli;
-  git clone https://github.com/Mr-Robert0/Logsensor.git;
-  cd Logsensor ;
-  sudo chmod +x logsensor.py install.sh;
-  pip install -r requirements.txt;
-  ./install.sh -y;
-  python3 logsensor.py -f urlsON.txt --login | anew loginsPAGES.txt;
-  rm -rf Logsensor;
-  cd ..;
-  cd ..;
-  mv loginPAGES.txt sqli;
-   banner
-        ;;
-    -redirect|-re)
-    cd $file;
-       mkdir redirect;
-       wget https://raw.githubusercontent.com/yamotoz/Angel_Azazel/main/payload_redirect.txt;
-       cat fuzz.txt | gf redirect | anew redirect.txt;
-       redi1=$(tail -n +1 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi1 | anew rediL1F.txt;
-       redi2=$(tail -n +2 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi2 | anew rediL2F.txt;
-       redi3=$(tail -n +3 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi3 | anew rediL3F.txt;
-       git clone https://github.com/devanshbatham/openredirex;
-       cd openredirex;
-       sudo chmod +x setup.sh;
-       ./setup.sh -y;
-       cat redirect.txt |  openredirex -p payload_redirect.txt -k "FUZZ" -c 50 | anew rediX.txt;
-       wapiti --level 1 -u $serv://$1 -m redirect --color -v 1 --scan-force insane -f html -o wapiti.html; 
-       mv redirect.txt rediL1F.txt rediL2F.txt rediL3F.txt rediX.txt wapiti.html redirect;
-        banner
-        ;;
-    -takeover|-ta)
-    cd $file;
-        tmkdir takeover;
-        subjack -w urlsON.txt -v | anew subjack.txt;
-        subzy r --targets urlsON.txt | anew subzy.txt;
-        wapiti --level 1 -u $serv://$1 -m takeover --color -v 1 --scan-force insane -f html -o wapiti.html;   
-        mv subjack.txt subzy.txt wapiti.html takeover;
-         banner
-        ;;
-    -idor|-i)
-    cd $file;
-         mkdir idor;
-        #payload
-        crunch 1 5 -f /usr/share/crunch/charset.lst numeric -o idorPay.txt;
-        cat fuzz.txt | gf idor | anew idorr.txt;
-        idor1=$(tail -n +1 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor1 | anew idorL1F.txt;
-        idor2=$(tail -n +2 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor2 | anew idorL2F.txt;
-        idor3=$(tail -n +3 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor3 | anew idorL3F.txt;
-        mv idorL1F.txt idorL2F.txt idorL3F.txt idorPay.txt idorr.txt idor;
-         banner
-        ;;
-    -simple|-sim)
-    cd $file;
-          mkdir simple;
-    #magic recon
-      cp urlsON.txt simple;
-      git clone https://github.com/robotshell/magicRecon;
-      cd magicRecon;
-      chmod +x install.sh;
-      ./install.sh -y;
-      ./magicrecon.sh -l urlsON.txt -v | anew magirecon.txt;
-      mv magiscrecon.txt ..;
-      rm -rf magicRecon;
-      cd ..;
-      
-      #sniper
-      #mudar para 5 o 1 abaixo para finalizar o script 
-      head -n 1 subss.txt | anew top5.txt;
-      sniper -f top5.txt -m airstrike -w $1 | anew snipertop5.txt;
-      rm subss.txt;
-      mv magicrecon.txt snipertop5.txt simple;
- banner
-        ;;
-    -recon)
-    cd $file;
-         mkdir recon;
-  #wapiti
-    pip3 install wapiti;
-    wapiti --level 1 -u $serv://$1 -m all --color -v 1 --scan-force insane -f html -o wapiti.html; 
-
-  #aquatone
-  cat urlsON.txt | aquatone ;
-
-  #nmap vuln
-  nmap -T4 -sV -sC -Pn --open -v --script vuln | anew nmap.txt;
-  mv headers html screenshots nmap.txt wapiti.html recon;  
- banner
-        ;;
-    *)
-        echo "ERROR OF SINTAXE"
-        exit 1
-        ;;
+   -x)
+ xss
+;;
+-s)
+  sqli
+;;
+-re)
+ redirect 
+;;
+-ta)
+ takeover       
+;;
+-i)
+idor      
+;;
+-sim)
+  simples
+;;
+-recon)
+  recon
+;;
+*)
+  echo "ERROR OF SINTAXE"
+  exit 1
+;;
 esac
 
 
 case $6 in
-    -xss|-x)
-    cd $file;
-  mkdir xss;
-    #dalfox 
-    cat urlsON.txt | gf xss | tee xss.txt;
-    dalfox file xss.txt | tee dalfoxPADRAO.txt;
-    cat xss.txt | dalfox pipe --skip-bav | tee dalfoxBAV.txt;
-    mv dalfoxPADRAO.txt dalfoxBAV.txt xss;
-    cat fuzz.txt | gf xss | anew xssF.txt;
-    wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Fuzzing/XSS-Fuzzing;
-    xss1=$(tail -n +1 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss1 | tee xssL1F.txt;
-    xss2=$(tail -n +2 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss2 | tee xssL2F.txt;
-    xss3=$(tail -n +3 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss3 | tee xssL3F.txt; 
-    #nuclei 
-    nuclei -list xss.txt -severity low,medium,high,critical -t root/nuclei-templates/xss -t root/nuclei-templates/cves.json  -output xssNuclei.txt; 
-    wapiti --level 1 -u $serv://$1 -m xss --color -v 1 --scan-force insane -f html -o wapiti.html; 
-    #implementar modulo do nuclei de xss e o mudulo de vulnerabilidade(dentro do kali)
-    mv xssL1F.txt xssL2F.txt xssL3F.txt xss.txt fuzz.txt xssF.txt xssNuclei xss;
-    cd xss;
-    mkdir files;
-    mv fuzz.txt xss.txt xssF.txt files;
-    cd ..;
-     banner
-        ;;
-    -sqli|-s)
-    cd $file;
-         mkdir sqli;
-  cp urlsON.txt sqli;
-  cd sqli;
-  git clone https://github.com/americo/sqlifinder;
-  cd sqlifinder;
-  pip3 install -r requirements.txt;
-  python3 sqlifinder -d $serv://$1 | anew sqli.txt;
-  python3 sqlifinder -d $serv://$1 -s | anew sqlisubs.txt;
-  mv sqli.txt sqlisubs.txt ..;
-  cat urlsON.txt | gf sqli | anew sqlii.txt;
-  sqlmap -m sqlii.txt --level=5 --risk=3 --dbs | anew sqlmap.txt;
-  wapiti --level 1 -u $serv://$1 -m blindsql sql --color -v 1 --scan-force insane -f html -o wapitisql.html;
-  mv wapitisql.html ..;
-  cd ..;
-  mv wapitisql.html sqli;
-  git clone https://github.com/Mr-Robert0/Logsensor.git;
-  cd Logsensor ;
-  sudo chmod +x logsensor.py install.sh;
-  pip install -r requirements.txt;
-  ./install.sh -y;
-  python3 logsensor.py -f urlsON.txt --login | anew loginsPAGES.txt;
-  rm -rf Logsensor;
-  cd ..;
-  cd ..;
-  mv loginPAGES.txt sqli;
-   banner
-        ;;
-    -redirect|-re)
-    cd $file;
-       mkdir redirect;
-       wget https://raw.githubusercontent.com/yamotoz/Angel_Azazel/main/payload_redirect.txt;
-       cat fuzz.txt | gf redirect | anew redirect.txt;
-       redi1=$(tail -n +1 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi1 | anew rediL1F.txt;
-       redi2=$(tail -n +2 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi2 | anew rediL2F.txt;
-       redi3=$(tail -n +3 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi3 | anew rediL3F.txt;
-       git clone https://github.com/devanshbatham/openredirex;
-       cd openredirex;
-       sudo chmod +x setup.sh;
-       ./setup.sh -y;
-       cat redirect.txt |  openredirex -p payload_redirect.txt -k "FUZZ" -c 50 | anew rediX.txt;
-       wapiti --level 1 -u $serv://$1 -m redirect --color -v 1 --scan-force insane -f html -o wapiti.html; 
-       mv redirect.txt rediL1F.txt rediL2F.txt rediL3F.txt rediX.txt wapiti.html redirect;
-        banner
-        ;;
-    -takeover|-ta)
-    cd $file;
-        tmkdir takeover;
-        subjack -w urlsON.txt -v | anew subjack.txt;
-        subzy r --targets urlsON.txt | anew subzy.txt;
-        wapiti --level 1 -u $serv://$1 -m takeover --color -v 1 --scan-force insane -f html -o wapiti.html;   
-        mv subjack.txt subzy.txt wapiti.html takeover;
-         banner
-        ;;
-    -idor|-i)
-    cd $file;
-         mkdir idor;
-        #payload
-        crunch 1 5 -f /usr/share/crunch/charset.lst numeric -o idorPay.txt;
-        cat fuzz.txt | gf idor | anew idorr.txt;
-        idor1=$(tail -n +1 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor1 | anew idorL1F.txt;
-        idor2=$(tail -n +2 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor2 | anew idorL2F.txt;
-        idor3=$(tail -n +3 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor3 | anew idorL3F.txt;
-        mv idorL1F.txt idorL2F.txt idorL3F.txt idorPay.txt idorr.txt idor;
-         banner
-        ;;
-    -simple|-sim)
-    cd $file;
-           mkdir simple;
-    #magic recon
-      cp urlsON.txt simple;
-      git clone https://github.com/robotshell/magicRecon;
-      cd magicRecon;
-      chmod +x install.sh;
-      ./install.sh -y;
-      ./magicrecon.sh -l urlsON.txt -v | anew magirecon.txt;
-      mv magiscrecon.txt ..;
-      rm -rf magicRecon;
-      cd ..;
-      
-      #sniper
-      #mudar para 5 o 1 abaixo para finalizar o script 
-      head -n 1 subss.txt | anew top5.txt;
-      sniper -f top5.txt -m airstrike -w $1 | anew snipertop5.txt;
-      rm subss.txt;
-      mv magicrecon.txt snipertop5.txt simple;
- banner
-        ;;
-    -recon)
-    cd $file;
-         mkdir recon;
-  #wapiti
-    pip3 install wapiti;
-    wapiti --level 1 -u $serv://$1 -m all --color -v 1 --scan-force insane -f html -o wapiti.html; 
-
-  #aquatone
-  cat urlsON.txt | aquatone ;
-
-  #nmap vuln
-  nmap -T4 -sV -sC -Pn --open -v --script vuln | anew nmap.txt;
-  mv headers html screenshots nmap.txt wapiti.html recon;  
- banner
-        ;;
-    *)
-        echo "ERROR OF SINTAXE"
-        exit 1
-        ;;
+   -x)
+ xss
+;;
+-s)
+  sqli
+;;
+-re)
+ redirect 
+;;
+-ta)
+ takeover       
+;;
+-i)
+idor      
+;;
+-sim)
+  simples
+;;
+-recon)
+  recon
+;;
+*)
+  echo "ERROR OF SINTAXE"
+  exit 1
+;;
 esac
 
 
 
 case $7 in
-    -xss|-x)
-    cd $file;
-  mkdir xss;
-    #dalfox 
-    cat urlsON.txt | gf xss | tee xss.txt;
-    dalfox file xss.txt | tee dalfoxPADRAO.txt;
-    cat xss.txt | dalfox pipe --skip-bav | tee dalfoxBAV.txt;
-    mv dalfoxPADRAO.txt dalfoxBAV.txt xss;
-    cat fuzz.txt | gf xss | anew xssF.txt;
-    wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Fuzzing/XSS-Fuzzing;
-    xss1=$(tail -n +1 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss1 | tee xssL1F.txt;
-    xss2=$(tail -n +2 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss2 | tee xssL2F.txt;
-    xss3=$(tail -n +3 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss3 | tee xssL3F.txt; 
-    #nuclei 
-    nuclei -list xss.txt -severity low,medium,high,critical -t root/nuclei-templates/xss -t root/nuclei-templates/cves.json  -output xssNuclei.txt; 
-    wapiti --level 1 -u $serv://$1 -m xss --color -v 1 --scan-force insane -f html -o wapiti.html; 
-    #implementar modulo do nuclei de xss e o mudulo de vulnerabilidade(dentro do kali)
-    mv xssL1F.txt xssL2F.txt xssL3F.txt xss.txt fuzz.txt xssF.txt xssNuclei xss;
-    cd xss;
-    mkdir files;
-    mv fuzz.txt xss.txt xssF.txt files;
-    cd ..;
-     banner
-        ;;
-    -sqli|-s)
-    cd $file;
-         mkdir sqli;
-  cp urlsON.txt sqli;
-  cd sqli;
-  git clone https://github.com/americo/sqlifinder;
-  cd sqlifinder;
-  pip3 install -r requirements.txt;
-  python3 sqlifinder -d $serv://$1 | anew sqli.txt;
-  python3 sqlifinder -d $serv://$1 -s | anew sqlisubs.txt;
-  mv sqli.txt sqlisubs.txt ..;
-  cat urlsON.txt | gf sqli | anew sqlii.txt;
-  sqlmap -m sqlii.txt --level=5 --risk=3 --dbs | anew sqlmap.txt;
-  wapiti --level 1 -u $serv://$1 -m blindsql sql --color -v 1 --scan-force insane -f html -o wapitisql.html;
-  mv wapitisql.html ..;
-  cd ..;
-  mv wapitisql.html sqli;
-  git clone https://github.com/Mr-Robert0/Logsensor.git;
-  cd Logsensor ;
-  sudo chmod +x logsensor.py install.sh;
-  pip install -r requirements.txt;
-  ./install.sh -y;
-  python3 logsensor.py -f urlsON.txt --login | anew loginsPAGES.txt;
-  rm -rf Logsensor;
-  cd ..;
-  cd ..;
-  mv loginPAGES.txt sqli;
-   banner
-        ;;
-    -redirect|-re)
-    cd $file;
-       mkdir redirect;
-       wget https://raw.githubusercontent.com/yamotoz/Angel_Azazel/main/payload_redirect.txt;
-       cat fuzz.txt | gf redirect | anew redirect.txt;
-       redi1=$(tail -n +1 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi1 | anew rediL1F.txt;
-       redi2=$(tail -n +2 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi2 | anew rediL2F.txt;
-       redi3=$(tail -n +3 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi3 | anew rediL3F.txt;
-       git clone https://github.com/devanshbatham/openredirex;
-       cd openredirex;
-       sudo chmod +x setup.sh;
-       ./setup.sh -y;
-       cat redirect.txt |  openredirex -p payload_redirect.txt -k "FUZZ" -c 50 | anew rediX.txt;
-       wapiti --level 1 -u $serv://$1 -m redirect --color -v 1 --scan-force insane -f html -o wapiti.html; 
-       mv redirect.txt rediL1F.txt rediL2F.txt rediL3F.txt rediX.txt wapiti.html redirect;
-        banner
-        ;;
-    -takeover|-ta)
-    cd $file;
-        mkdir takeover;
-        subjack -w urlsON.txt -v | anew subjack.txt;
-        subzy r --targets urlsON.txt | anew subzy.txt;
-        wapiti --level 1 -u $serv://$1 -m takeover --color -v 1 --scan-force insane -f html -o wapiti.html;   
-        mv subjack.txt subzy.txt wapiti.html takeover;
-         banner
-        ;;
-    -idor|-i)
-    cd $file;
-         mkdir idor;
-        #payload
-        crunch 1 5 -f /usr/share/crunch/charset.lst numeric -o idorPay.txt;
-        cat fuzz.txt | gf idor | anew idorr.txt;
-        idor1=$(tail -n +1 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor1 | anew idorL1F.txt;
-        idor2=$(tail -n +2 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor2 | anew idorL2F.txt;
-        idor3=$(tail -n +3 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor3 | anew idorL3F.txt;
-        mv idorL1F.txt idorL2F.txt idorL3F.txt idorPay.txt idorr.txt idor;
-         banner
-        ;;
-    -simple|-sim)
-    cd $file;
-          mkdir simple;
-    #magic recon
-      cp urlsON.txt simple;
-      git clone https://github.com/robotshell/magicRecon;
-      cd magicRecon;
-      chmod +x install.sh;
-      ./install.sh -y;
-      ./magicrecon.sh -l urlsON.txt -v | anew magirecon.txt;
-      mv magiscrecon.txt ..;
-      rm -rf magicRecon;
-      cd ..;
-      
-      #sniper
-      #mudar para 5 o 1 abaixo para finalizar o script 
-      head -n 1 subss.txt | anew top5.txt;
-      sniper -f top5.txt -m airstrike -w $1 | anew snipertop5.txt;
-      rm subss.txt;
-      mv magicrecon.txt snipertop5.txt simple;
- banner
-        ;;
-    -recon)
-    cd $file;
-         mkdir recon;
-  #wapiti
-    pip3 install wapiti;
-    wapiti --level 1 -u $serv://$1 -m all --color -v 1 --scan-force insane -f html -o wapiti.html; 
-
-  #aquatone
-  cat urlsON.txt | aquatone ;
-
-  #nmap vuln
-  nmap -T4 -sV -sC -Pn --open -v --script vuln | anew nmap.txt;
-  mv headers html screenshots nmap.txt wapiti.html recon;  
- banner
-        ;;
-    *)
-        echo "ERROR OF SINTAXE"
-        exit 1
-        ;;
+   -x)
+ xss
+;;
+-s)
+  sqli
+;;
+-re)
+ redirect 
+;;
+-ta)
+ takeover       
+;;
+-i)
+idor      
+;;
+-sim)
+  simples
+;;
+-recon)
+  recon
+;;
+*)
+  echo "ERROR OF SINTAXE"
+  exit 1
+;;
 esac
 
 
 case $8 in
-    -xss|-x)
-    cd $file;
-  mkdir xss;
-    #dalfox 
-    cat urlsON.txt | gf xss | tee xss.txt;
-    dalfox file xss.txt | tee dalfoxPADRAO.txt;
-    cat xss.txt | dalfox pipe --skip-bav | tee dalfoxBAV.txt;
-    mv dalfoxPADRAO.txt dalfoxBAV.txt xss;
-    cat fuzz.txt | gf xss | anew xssF.txt;
-    wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Fuzzing/XSS-Fuzzing;
-    xss1=$(tail -n +1 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss1 | tee xssL1F.txt;
-    xss2=$(tail -n +2 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss2 | tee xssL2F.txt;
-    xss3=$(tail -n +3 xssF.txt | head -n 1);
-    wfuzz --hc 404,400,406 -c -v -z file,XSS-Fuzzing $xss3 | tee xssL3F.txt; 
-    #nuclei 
-    nuclei -list xss.txt -severity low,medium,high,critical -t root/nuclei-templates/xss -t root/nuclei-templates/cves.json  -output xssNuclei.txt; 
-    wapiti --level 1 -u $serv://$1 -m xss --color -v 1 --scan-force insane -f html -o wapiti.html; 
-    #implementar modulo do nuclei de xss e o mudulo de vulnerabilidade(dentro do kali)
-    mv xssL1F.txt xssL2F.txt xssL3F.txt xss.txt fuzz.txt xssF.txt xssNuclei xss;
-    cd xss;
-    mkdir files;
-    mv fuzz.txt xss.txt xssF.txt files;
-    cd ..;
-     banner
-        ;;
-    -sqli|-s)
-    cd $file;
-         mkdir sqli;
-  cp urlsON.txt sqli;
-  cd sqli;
-  git clone https://github.com/americo/sqlifinder;
-  cd sqlifinder;
-  pip3 install -r requirements.txt;
-  python3 sqlifinder -d $serv://$1 | anew sqli.txt;
-  python3 sqlifinder -d $serv://$1 -s | anew sqlisubs.txt;
-  mv sqli.txt sqlisubs.txt ..;
-  cat urlsON.txt | gf sqli | anew sqlii.txt;
-  sqlmap -m sqlii.txt --level=5 --risk=3 --dbs | anew sqlmap.txt;
-  wapiti --level 1 -u $serv://$1 -m blindsql sql --color -v 1 --scan-force insane -f html -o wapitisql.html;
-  mv wapitisql.html ..;
-  cd ..;
-  mv wapitisql.html sqli;
-  git clone https://github.com/Mr-Robert0/Logsensor.git;
-  cd Logsensor ;
-  sudo chmod +x logsensor.py install.sh;
-  pip install -r requirements.txt;
-  ./install.sh -y;
-  python3 logsensor.py -f urlsON.txt --login | anew loginsPAGES.txt;
-  rm -rf Logsensor;
-  cd ..;
-  cd ..;
-  mv loginPAGES.txt sqli;
-   banner
-        ;;
-    -redirect|-re)
-    cd $file;
-       mkdir redirect;
-       wget https://raw.githubusercontent.com/yamotoz/Angel_Azazel/main/payload_redirect.txt;
-       cat fuzz.txt | gf redirect | anew redirect.txt;
-       redi1=$(tail -n +1 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi1 | anew rediL1F.txt;
-       redi2=$(tail -n +2 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi2 | anew rediL2F.txt;
-       redi3=$(tail -n +3 redirect.txt | head -n 1);
-       wfuzz --hc 404,400,406 -c -v -z file,payload_redirect.txt $redi3 | anew rediL3F.txt;
-       git clone https://github.com/devanshbatham/openredirex;
-       cd openredirex;
-       sudo chmod +x setup.sh;
-       ./setup.sh -y;
-       cat redirect.txt |  openredirex -p payload_redirect.txt -k "FUZZ" -c 50 | anew rediX.txt;
-       wapiti --level 1 -u $serv://$1 -m redirect --color -v 1 --scan-force insane -f html -o wapiti.html; 
-       mv redirect.txt rediL1F.txt rediL2F.txt rediL3F.txt rediX.txt wapiti.html redirect;
-        banner
-        ;;
-    -takeover|-ta)
-    cd $file;
-        mkdir takeover;
-        subjack -w urlsON.txt -v | anew subjack.txt;
-        subzy r --targets urlsON.txt | anew subzy.txt;
-        wapiti --level 1 -u $serv://$1 -m takeover --color -v 1 --scan-force insane -f html -o wapiti.html;   
-        mv subjack.txt subzy.txt wapiti.html takeover;
-         banner
-        ;;
-    -idor|-i)
-    cd $file;
-         mkdir idor;
-        #payload
-        crunch 1 5 -f /usr/share/crunch/charset.lst numeric -o idorPay.txt;
-        cat fuzz.txt | gf idor | anew idorr.txt;
-        idor1=$(tail -n +1 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor1 | anew idorL1F.txt;
-        idor2=$(tail -n +2 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor2 | anew idorL2F.txt;
-        idor3=$(tail -n +3 idorr.txt | head -n 1);
-        wfuzz --hc 404,400,406 -c -v -z file,idorP.txt $idor3 | anew idorL3F.txt;
-        mv idorL1F.txt idorL2F.txt idorL3F.txt idorPay.txt idorr.txt idor;
-         banner
-        ;;
-    -simple|-sim)
-    cd $file;
-      mkdir simple;
-    #magic recon
-      cp urlsON.txt simple;
-      git clone https://github.com/robotshell/magicRecon;
-      cd magicRecon;
-      chmod +x install.sh;
-      ./install.sh -y;
-      ./magicrecon.sh -l urlsON.txt -v | anew magirecon.txt;
-      mv magiscrecon.txt ..;
-      rm -rf magicRecon;
-      cd ..;
-      
-      #sniper
-      #mudar para 5 o 1 abaixo para finalizar o script 
-      head -n 1 subss.txt | anew top5.txt;
-      sniper -f top5.txt -m airstrike -w $1 | anew snipertop5.txt;
-      rm subss.txt;
-      mv magicrecon.txt snipertop5.txt simple;
- banner
-        ;;
-    -recon)
-    cd $file;
-         mkdir recon;
-  #wapiti
-    pip3 install wapiti;
-    wapiti --level 1 -u $serv://$1 -m all --color -v 1 --scan-force insane -f html -o wapiti.html; 
-
-  #aquatone
-  cat urlsON.txt | aquatone ;
-
-  #nmap vuln
-  nmap -T4 -sV -sC -Pn --open -v --script vuln | anew nmap.txt;
-  mv headers html screenshots nmap.txt wapiti.html recon;  
-   banner
-        ;;
-    *)
-        echo "ERROR OF SINTAXE"
-        exit 1
-        ;;
+  -x)
+ xss
+;;
+-s)
+  sqli
+;;
+-re)
+ redirect 
+;;
+-ta)
+ takeover       
+;;
+-i)
+idor      
+;;
+-sim)
+  simples
+;;
+-recon)
+  recon
+;;
+*)
+  echo "ERROR OF SINTAXE"
+  exit 1
+;;
 esac
 
 
